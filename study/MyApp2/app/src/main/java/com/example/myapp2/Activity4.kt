@@ -1,5 +1,6 @@
 package com.example.myapp2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -17,27 +18,45 @@ class Activity4 : AppCompatActivity() {
     }
     fun Onclick(view: View)
     {
-        if((binding.editName.text.toString() == Constance.masterName)&&(binding.editPassword.text.toString() == Constance.masterPassword))
+       /* if((binding.editName.text.toString() == Info.masterName)&&(binding.editPassword.text.toString() == Info.masterPassword))
         {
-            binding.textView2.text = "${getString(R.string.hello)} ${Constance.masterName}!"
+            binding.textView2.text = "${getString(R.string.hello)} ${Info.masterName}!"
             binding.imageView.setImageResource(R.drawable.master);
         }
-        else if((binding.editName.text.toString() == Constance.hamsterName)&&(binding.editPassword.text.toString() == Constance.hamsterPassword))
+        else if((binding.editName.text.toString() == Info.hamsterName)&&(binding.editPassword.text.toString() == Info.hamsterPassword))
         {
-            binding.textView2.text = "${getString(R.string.hello)} ${Constance.hamsterName}!"
+            binding.textView2.text = "${getString(R.string.hello)} ${Info.hamsterName}!"
             binding.imageView.setImageResource(R.drawable.hamster);
         }
         else
         {
             binding.textView2.text = "${getString(R.string.fuck_you)} ${binding.editName.text}"
             binding.imageView.setImageResource(R.drawable.fuck_you);
+        }*/
+        for(el in Info.persons)
+        {
+            val name = binding.editName.text.toString();
+            val pass = binding.editPassword.text.toString()
+            if (el.name==name)
+            {
+                if (el.pass == pass)
+                {
+                    binding.textView2.text = "${getString(R.string.hello)} ${el.name}!"
+                    binding.imageView.setImageResource(this.resources.getIdentifier(el.image,"drawable",this.packageName))
+                }
+                else
+                {
+                    binding.textView2.text = "${getString(R.string.fuck_you)} ${binding.editName.text}"
+                    binding.imageView.setImageResource(R.drawable.fuck_you);
+                }
+                return
+            }
         }
     }
-    object Constance
+    fun OnRegister (view: View)
     {
-        const val masterName:String = "master";
-        const val hamsterName:String = "hamster";
-        const val masterPassword:String = "pass";
-        const val hamsterPassword:String = "pass";
+        var intent = Intent(this,registerActivity::class.java);
+        startActivity(intent);
     }
+
 }
