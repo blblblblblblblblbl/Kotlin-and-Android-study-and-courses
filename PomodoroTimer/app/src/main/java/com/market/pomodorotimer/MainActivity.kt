@@ -4,9 +4,16 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.media.MediaPlayer
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Button
+import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.market.pomodorotimer.databinding.ActivityMainBinding
 import kotlin.math.roundToInt
 
@@ -14,8 +21,14 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private  var timeStarted = false
-    private var time:Double = 0.0
+    private var curTime:Double = 0.0
+    private var workTime:Int = 0
+    private var relaxTime:Int = 0
     private lateinit var serviceIntent: Intent
+    private val dataModel: DataModel by viewModels()
+    private var isWorkPhase: Boolean = true
+    private lateinit var mp:MediaPlayer
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,60 +36,124 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         onClickInit()
         serviceInit()
+        mp = MediaPlayer.create(this,R.raw.ringtone)
+        binding.bStopAlarm.visibility = View.GONE
+        dataModel.timeWork.observe(this,{workTime = it})
+        dataModel.timeRelax.observe(this,{relaxTime = it})
+        configureTimer()
     }
-    fun serviceInit()
+    private fun serviceInit()
     {
         serviceIntent = Intent(applicationContext,TimerService::class.java)
         registerReceiver(updateTime, IntentFilter(TimerService.TIMER_UPDATE))
     }
     private val updateTime:BroadcastReceiver = object : BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
-            time = intent!!.getDoubleExtra(TimerService.TIME_EXTRA,0.0)
-            binding.timeTV.text = getTimeStringFromDouble(time)
+            curTime = intent!!.getDoubleExtra(TimerService.TIME_EXTRA,0.0)
+            if (Math.abs(curTime.roundToInt())==0) timerEnd()
+            binding.timeTV.text = Functions.getTimeStringFromDouble(curTime)//getTimeStringFromDouble(curTime)
         }
     }
-    private fun getTimeStringFromDouble(time:Double):String
-    {
-        val resultInt = time.roundToInt()
-        val hours = resultInt%86400/3600
-        val minutes = resultInt%86400%3600/60
-        val seconds = resultInt%86400%3600%60
-        return makeTimeString(hours,minutes,seconds)
+    fun timerEnd(){
+        stopTimer()
+        alarm()
     }
-    private fun makeTimeString(hour:Int,min:Int,sec:Int):String = String.format("%02d:%02d:%02d",hour,min,sec)
+    fun alarm()
+    {
+        Log.d("MyLog","alarm")
+        binding.centr.visibility = View.GONE
+        binding.placeHolder.visibility =View.GONE
+        binding.bStopAlarm.visibility = View.VISIBLE
+        mp.start()
+    }
+    fun stopAlarm(){
+        if (mp.isPlaying) {
+            mp.stop()
+            mp.prepare()
+        }
+        binding.centr.visibility = View.VISIBLE
+        binding.placeHolder.visibility = View.VISIBLE
+        binding.bStopAlarm.visibility = View.GONE
+        isWorkPhase = !isWorkPhase
+    }
     fun onClickInit()
     {
         binding.apply {
             bPlay.setOnClickListener(){
-                startStopTimer(it)
+                startStopTimer()
             }
             bRestart.setOnClickListener() {
-                resetTimer(it)
+                resetTimer()
+            }
+            bConfig.setOnClickListener(){
+                configureTimer()
+            }
+            bStopAlarm.setOnClickListener()
+            {
+                stopAlarm()
             }
         }
     }
-    fun startStopTimer(view: View)
+
+
+    private fun startStopTimer()
     {
         if (timeStarted) stopTimer()
         else startTimer()
     }
-    fun startTimer()
+    private fun startTimer()
     {
-        serviceIntent.putExtra(TimerService.TIME_EXTRA,time)
+        if(Math.abs(curTime.roundToInt())==0){
+            if(isWorkPhase) curTime = workTime.toDouble()
+            else curTime = relaxTime.toDouble()
+        }
+        serviceIntent.putExtra(TimerService.TIME_EXTRA,-Math.abs(curTime))
         startService(serviceIntent)
-        binding.bPlay.icon = getDrawable(R.drawable.ic_baseline_pause_24)
+        binding.bPlay.icon = getDrawable(R.drawable.ic_baseline_pause_36)
         timeStarted = true
     }
-    fun stopTimer()
+    private fun stopTimer()
     {
         stopService(serviceIntent)
-        binding.bPlay.icon = getDrawable(R.drawable.ic_baseline_play_arrow_24)
+        binding.bPlay.icon = getDrawable(R.drawable.ic_baseline_play_arrow_36)
         timeStarted = false
     }
-    fun resetTimer(view: View)
+    private fun resetTimer()
     {
         stopTimer()
-        time = 0.0
-        binding.timeTV.text = getTimeStringFromDouble(time)
+        curTime = 0.0
+        binding.timeTV.text = Functions.getTimeStringFromDouble(workTime.toDouble())
     }
+
+    private fun configureTimer() {
+        supportFragmentManager.beginTransaction().add(binding.placeHolder.id,TimeSelector.newInstance()).commit()
+        binding.centr.visibility = View.GONE
+    }
+
+    /*private fun configureTimer() {
+       *//* ftrans = supportFragmentManager.beginTransaction()
+        if (fIsOpen) {
+            ftrans!!.remove(fragConfigure)
+        }
+        else{
+            fragConfigure = TimeSelector.newInstance()
+            binding.centr.visibility = View.GONE
+            ftrans!!.add(binding.placeHolder.id,fragConfigure)
+        }
+        fIsOpen = !fIsOpen
+        ftrans!!.commit()*//*
+        //var timeSelector = TimeSelector.newInstance()
+        supportFragmentManager.beginTransaction().add(binding.placeHolder.id,TimeSelector.newInstance()).commit()
+        binding.centr.visibility = View.GONE
+        *//*dataModel.timeToAct.observe(this,{
+            curTime = -it.toDouble()
+            binding.timeTV.text = Functions.getTimeStringFromDouble(curTime)
+        })*//*
+    }*/
+    /*private fun openFrag(f:Fragment,idHolder: Int){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(idHolder,f)
+            .commit()
+    }*/
 }
