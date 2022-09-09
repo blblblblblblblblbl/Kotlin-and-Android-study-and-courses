@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">downloadImage</string>
+    <string name="ic_content_description">downloadedImage</string>
+</resources>

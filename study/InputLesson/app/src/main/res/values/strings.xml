@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">InputLesson</string>
+    <string name="input_hint">email</string>
+    <string name="invalid_email_address">invalid email address</string>
+    <string name="valid_email_address">valid email address</string>
+    <string name="loginButtonText">login</string>
+    <string name="agreement">I agree with terms of use and privacy policy</string>
+    <string name="attention">Attention</string>
+    <string name="service">service is unavailable</string>
+    <string name="close">close</string>
+</resources>

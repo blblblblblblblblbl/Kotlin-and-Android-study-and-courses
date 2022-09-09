@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="@string/input_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine|textEmailAddress">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+        </Space>
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/agreement"
+            android:layout_margin="10dp"
+            >
+        </CheckBox>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/loginButtonText"
+            android:layout_margin="10dp"
+            >
+        </com.google.android.material.button.MaterialButton>
+
+    </LinearLayout>
+    <!--<androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:visibility="invisible"
+        android:layout_gravity="center"
+        >
+
+    </androidx.core.widget.ContentLoadingProgressBar>-->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:visibility="invisible"
+        android:layout_gravity="center"
+        >
+
+    </ProgressBar>
+</FrameLayout>
