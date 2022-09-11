@@ -2,16 +2,17 @@ package com.blblblbl.mvvm1timer
 
 import java.util.*
 
-class Model() {
+class Model(private val dataSource: DataSource) {
 
     private var timer:Timer? = null
-    private var count:Int = 0
+    private var count:Int = -1
     private var textCallBack:TextCallBack? = null
 
 
     fun start(callBack: TextCallBack){
         textCallBack = callBack
         timer = Timer()
+        if(count<0){count = dataSource.getInt(CacheDataSource.COUNT_KEY)}
         val timerTask = object :TimerTask()
         {
             override fun run() {
@@ -23,6 +24,7 @@ class Model() {
 
     }
     fun stop(){
+        dataSource.saveInt(CacheDataSource.COUNT_KEY,count)
         timer?.cancel()
         timer = null
     }

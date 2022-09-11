@@ -3,6 +3,7 @@ package com.blblblbl.mvvm1timer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.blblblbl.mvvm1timer.databinding.ActivityMainBinding
+import com.blblblbl.unittest.Main
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         }
         textObservable.observe(textCallBack)
         viewModel.init(textObservable)
+        Main.main(arrayOf("",""))
         //viewModel.init()
     }
 
