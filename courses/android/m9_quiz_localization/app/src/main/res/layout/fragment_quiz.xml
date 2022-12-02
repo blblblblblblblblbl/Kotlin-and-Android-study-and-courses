@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QuizFragment"
+    android:background="@color/back"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+
+        <com.blblblbl.quiz.QuizQuestion
+            android:id="@+id/q1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            app:questionText="@string/question1"
+            app:firstVariantText="yes"
+            app:secondVariantText="no"
+            >
+        </com.blblblbl.quiz.QuizQuestion>
+        <com.blblblbl.quiz.QuizQuestion
+            android:id="@+id/q2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            app:questionText="@string/question2"
+            app:firstVariantText="1"
+            app:secondVariantText="2"
+            >
+        </com.blblblbl.quiz.QuizQuestion>
+
+        <com.blblblbl.quiz.QuizQuestion
+            android:id="@+id/q3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            app:questionText="@string/question3"
+            app:firstVariantText="A"
+            app:secondVariantText="B"
+            >
+        </com.blblblbl.quiz.QuizQuestion>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bQiuzBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.OutlinedButton.my"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1.My.Big"
+            android:text="@string/back"
+            >
+        </com.google.android.material.button.MaterialButton>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bQiuzResults"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.OutlinedButton.my"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1.My.Big"
+            android:text="@string/results"
+            >
+        </com.google.android.material.button.MaterialButton>
+    </LinearLayout>
+
+
+</ScrollView>

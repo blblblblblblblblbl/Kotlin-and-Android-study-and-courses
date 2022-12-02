@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.Material3.BodyMedium.My">
+        <item name="fontFamily">@font/proxima_nova_light</item>
+    </style>
+    <style name="TextAppearance.Material3.BodyMedium.My.Small">
+        <item name="android:textSize">10sp</item>
+    </style>
+    <style name="TextAppearance.Material3.BodyMedium.My.Medium">
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="TextAppearance.Material3.BodyMedium.My.Large">
+        <item name="android:textSize">30sp</item>
+    </style>
+</resources>

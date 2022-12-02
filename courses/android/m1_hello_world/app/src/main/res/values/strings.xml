@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="all_places_free">все места свободны</string>
+    <string name="places_left">осталось мест</string>
+    <string name="no_places">пассажиров слишком много!</string>
+
+</resources>

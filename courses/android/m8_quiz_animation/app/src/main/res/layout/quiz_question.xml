@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1.My.Huge"
+        >
+    </com.google.android.material.textview.MaterialTextView>
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/tGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        android:gravity="center"
+        >
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bV1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.OutlinedButton.my"
+            android:text="@string/variant1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1.My.Medium"
+            >
+        </com.google.android.material.button.MaterialButton>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bV2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.OutlinedButton.my"
+            android:text="@string/variant2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1.My.Medium"
+            >
+        </com.google.android.material.button.MaterialButton>
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+</LinearLayout>

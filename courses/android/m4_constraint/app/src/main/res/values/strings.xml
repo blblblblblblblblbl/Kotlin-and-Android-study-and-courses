@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="performer">performer</string>
+    <string name="track_name">track name</string>
+</resources>

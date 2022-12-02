@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="b_start">start</string>
+    <string name="timer_name">countdown timer</string>
+    <string name="b_stop">stop</string>
+</resources>

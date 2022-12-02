@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GreetingFragment"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/back"
+    >
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvGreeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/greetings"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1.My.Big"
+        >
+    </com.google.android.material.textview.MaterialTextView>
+
+    <ImageView
+        android:id="@+id/ivGreeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_welcome_picture"
+         />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bGreetingStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.OutlinedButton.my"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1.My.Medium"
+        android:text="@string/start_quiz"
+
+        >
+    </com.google.android.material.button.MaterialButton>
+
+</LinearLayout>
