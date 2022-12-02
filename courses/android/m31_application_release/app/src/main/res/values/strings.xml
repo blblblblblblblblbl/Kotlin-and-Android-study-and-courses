@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">QUIZ</string>
+    <string name="greetings">welcome to quiz app</string>
+    <string name="start_quiz">start quiz</string>
+    <string name="back">back</string>
+    <string name="results">results</string>
+    <string name="variant2">variant2</string>
+    <string name="variant1">variant1</string>
+    <string name="start_again">start again</string>
+    <string name="question1">question1</string>
+    <string name="question2">question2</string>
+    <string name="question3">question3</string>
+    <string name="date_pick">birth date</string>
+</resources>

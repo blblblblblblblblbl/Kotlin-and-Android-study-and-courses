@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/MyStyle.Big"
+        android:text="@string/timer_name"
+        >
+    </com.google.android.material.textview.MaterialTextView>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:indeterminateOnly="false"
+            android:progressDrawable="@drawable/circle"
+            android:progress="100"
+            android:rotation="-90"
+            >
+        </ProgressBar>
+        <TextView
+            android:id="@+id/tvTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAppearance="@style/MyStyle.Huge"
+            android:text="10"
+            >
+        </TextView>
+    </FrameLayout>
+    <com.google.android.material.slider.Slider
+        android:id="@+id/mainSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stepSize="10"
+        app:tickVisible="true"
+        android:valueFrom="10"
+        android:valueTo="60"
+
+        >
+    </com.google.android.material.slider.Slider>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bStart"
+        style="@style/Widget.Material3.Button.OutlinedButton.MyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/b_start"
+        >
+    </com.google.android.material.button.MaterialButton>
+
+</LinearLayout>
