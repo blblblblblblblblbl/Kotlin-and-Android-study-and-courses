@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">TZ</string>
+
+
+    <string name="input_hint_first_name">first name</string>
+    <string name="input_hint_second_name">second name</string>
+    <string name="input_hint_password">password</string>
+    <string name="button_text_registration">register</string>
+    <string name="date_of_birth">date of birth</string>
+    <string name="input_hint_confirm_your_password">confirm your password</string>
+
+    <string name="main_screen_button_hello">hello</string>
+    <string name="error_invalid_data">Invalid data</string>
+
+    <string name="error_first_name_text"> length must be between 2 and 20</string>
+    <string name="error_second_name_text"> length must be between 2 and 20</string>
+    <string name="error_password_text"> passwords must match and length more than 5</string>
+
+</resources>
