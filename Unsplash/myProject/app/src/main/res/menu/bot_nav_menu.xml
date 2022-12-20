@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/photosFragment"
+        android:title="@string/photos_fragment_title"
+        />
+    <item
+        android:id="@+id/collectionsFragment"
+        android:title="@string/collections_fragment_title"
+        />
+    <item
+        android:id="@+id/userFragment"
+        android:title="@string/user_fragment_title"
+        />
+
+</menu>
