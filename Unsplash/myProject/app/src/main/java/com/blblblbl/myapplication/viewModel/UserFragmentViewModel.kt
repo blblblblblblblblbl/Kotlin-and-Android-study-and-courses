@@ -8,6 +8,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.blblblbl.myapplication.data.LikedPhotosPagingSource
+import com.blblblbl.myapplication.data.PersistantStorage
 import com.blblblbl.myapplication.data.PhotosPagingSource
 import com.blblblbl.myapplication.data.data_classes.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
@@ -25,13 +26,20 @@ import javax.inject.Inject
 class UserFragmentViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val likedPhotosPagingSource: LikedPhotosPagingSource,
-    private val repository: Repository
+    private val repository: Repository,
+    private val persistantStorage: PersistantStorage
 ):ViewModel() {
     lateinit var pagedPhotos: Flow<PagingData<Photo>>
     private val _privateUserInfo = MutableStateFlow<UserInfo?>(null)
     val privateUserInfo = _privateUserInfo.asStateFlow()
     private val _publicUserInfo = MutableStateFlow<PublicUserInfo?>(null)
     val publicUserInfo = _publicUserInfo.asStateFlow()
+    fun logout(){
+        viewModelScope.launch{
+            persistantStorage.clear()
+            repository.clearDB()
+        }
+    }
     fun getUserInfo(){
         viewModelScope.launch {
             /*Log.d("MyLog","try to get userinfo")

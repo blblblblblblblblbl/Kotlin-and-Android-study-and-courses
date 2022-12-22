@@ -1,24 +1,26 @@
 package com.blblblbl.myapplication.viewModel
 
-import android.R
 import android.content.Context
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
+import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
+import android.media.MediaScannerConnection
 import android.os.Environment
 import android.util.Log
-import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.net.toUri
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.*
+import com.blblblbl.myapplication.DownloadWorker
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.domain.GetPhotosUseCase
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -34,6 +36,8 @@ class PhotoDetailedInfoFragmentViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ):ViewModel() {
     private val _detailedPhotoInfo = MutableStateFlow<DetailedPhotoInfo?>(null)
+    var status = MutableLiveData<Boolean?>()
+    var intent :Intent? = null
     val detailedPhotoInfo = _detailedPhotoInfo.asStateFlow()
     fun getPhotoById(id:String){
         viewModelScope.launch {
@@ -42,78 +46,89 @@ class PhotoDetailedInfoFragmentViewModel @Inject constructor(
             Log.d("MyLog","single photo by id response:${response}")
         }
     }
-
-    fun Context.getAppName(): String = applicationInfo.loadLabel(packageManager).toString()
-    fun downloadImage(imageURL: String) {
-        Log.d("MyLog","view model downloading image")
-        val dirPath = Environment.getExternalStorageDirectory().absolutePath + "/" + context.getAppName().replace(" ","") + "/"
-        Log.d("MyLog","dirPath:$dirPath")
-        val dir = File(dirPath)
-        val fileName = imageURL.substring(imageURL.lastIndexOf('/') + 1)
-        Glide.with(context)
-            .load(imageURL)
-            .into(object : CustomTarget<Drawable?>() {
-                override fun onResourceReady(
-                    resource: Drawable,
-                    transition: Transition<in Drawable?>?
-                ) {
-                    val bitmap = (resource as BitmapDrawable).bitmap
-                    Toast.makeText(context, "Saving Image...", Toast.LENGTH_SHORT).show()
-                    saveImage(bitmap, dir, fileName)
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {}
-                override fun onLoadFailed(errorDrawable: Drawable?) {
-                    super.onLoadFailed(errorDrawable)
-                    Toast.makeText(
-                        context,
-                        "Failed to Download Image! Please try again later.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-    }
-    private fun saveImage(image: Bitmap, storageDir: File, imageFileName: String) {
-        var successDirCreated = true
-        Log.d("MyLog","storageDir.exists():${storageDir.exists()} ")
-        if (!storageDir.exists()) {
-            Log.d("MyLog","!storageDir.exists()")
-            successDirCreated = storageDir.mkdir()
+    fun download(){
+        val handler = CoroutineExceptionHandler { _, exception ->
+            val constraints: Constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+            val downloadWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
+                .setInputData(
+                    Data.Builder()
+                        .putString(DownloadWorker.URL,detailedPhotoInfo.value?.urls?.raw)
+                        .putString(DownloadWorker.ID,detailedPhotoInfo.value?.id)
+                        .build())
+                .setConstraints(constraints)
+                .build()
+            WorkManager
+                .getInstance(context)
+                .enqueue(downloadWorkRequest)
         }
-        if (successDirCreated) {
-            val imageFile = File(storageDir, "imageFileName")
-            Log.d("MyLog","storageDir.absolutePath: "+storageDir.absolutePath)
-            Log.d("MyLog","imageFileName: "+imageFileName)
-            val savedImagePath = imageFile.absolutePath
-            val fOut: OutputStream = FileOutputStream(imageFile)
-            image.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
-            fOut.close()
-            Toast.makeText(context, "Image Saved!", Toast.LENGTH_SHORT).show()
-            /*try {
+        download1(handler)
+
+    }
+    fun download1(handler :CoroutineExceptionHandler){
+        CoroutineScope(Dispatchers.IO).launch(handler) {
+        //viewModelScope.launch {
+            detailedPhotoInfo.value?.id?.let { id->
+                saveImage(
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(detailedPhotoInfo.value?.urls?.raw) // sample image
+                        .placeholder(android.R.drawable.progress_indeterminate_horizontal) // need placeholder to avoid issue like glide annotations
+                        .error(android.R.drawable.stat_notify_error) // need error to avoid issue like glide annotations
+                        .submit()
+                        .get(), id
+                )
+            }
+        }
+    }
+    private fun saveImage(image: Bitmap,name:String): String? {
+        var savedImagePath: String? = null
+        val imageFileName = "$name.jpg"
+        val storageDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                .toString() + "/YOUR_FOLDER_NAME"
+        )
+        Log.d("MyLog", "storageDir: $storageDir")
+        var success = true
+        if (!storageDir.exists()) {
+            success = storageDir.mkdirs()
+        }
+        if (success) {
+            val imageFile = File(storageDir, imageFileName)
+            savedImagePath = imageFile.getAbsolutePath()
+            try {
                 val fOut: OutputStream = FileOutputStream(imageFile)
                 image.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
                 fOut.close()
-                Toast.makeText(context, "Image Saved!", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
-                Toast.makeText(context, "Error while saving image!", Toast.LENGTH_SHORT)
-                    .show()
                 e.printStackTrace()
-            }*/
-        } else {
-            Toast.makeText(context, "Failed to make folder!", Toast.LENGTH_SHORT).show()
+            }
+            galleryAddPic(savedImagePath)
+
+            //Toast.makeText(context, "IMAGE SAVED", Toast.LENGTH_LONG).show() // to make this working, need to manage coroutine, as this execution is something off the main thread
+        }
+        return savedImagePath
+    }
+    private fun galleryAddPic(imagePath: String?) {
+        imagePath?.let { path ->
+            val file = File(path)
+            MediaScannerConnection.scanFile(context, arrayOf(file.toString()), null, null)
+            //val intent = Intent(Intent.ACTION_VIEW)
+            intent = Intent(Intent.ACTION_VIEW)
+            intent?.let {intent->
+                intent.setDataAndType(path.toUri(), "image/*")
+                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            status.postValue(true)
+            //startActivity(context,intent,null)
         }
     }
-    /*fun verifyPermissions(): Boolean? {
-
-        // This will return the current Status
-        val permissionExternalMemory =
-            ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (permissionExternalMemory != PackageManager.PERMISSION_GRANTED) {
-            val STORAGE_PERMISSIONS = arrayOf<String>(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            // If permission not granted then ask for permission real time.
-            ActivityCompat.requestPermissions(context, STORAGE_PERMISSIONS, 1)
-            return false
+    fun openGallery(){
+        intent?.let {intent->
+            startActivity(context,intent,null)
         }
-        return true
-    }*/
+    }
+
 }

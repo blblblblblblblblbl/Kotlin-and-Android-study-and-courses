@@ -9,6 +9,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,7 +36,6 @@ import androidx.paging.compose.items
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.data.data_classes.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
-import com.blblblbl.myapplication.databinding.FragmentUserBinding
 import com.blblblbl.myapplication.viewModel.UserFragmentViewModel
 import com.example.example.UserInfo
 import com.skydoves.landscapist.glide.GlideImage
@@ -43,6 +46,7 @@ import kotlinx.coroutines.flow.StateFlow
 @AndroidEntryPoint
 class UserFragment : Fragment() {
     private val viewModel:UserFragmentViewModel by viewModels()
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,11 +54,71 @@ class UserFragment : Fragment() {
         viewModel.getUserInfo()
         return ComposeView(requireContext()).apply {
             setContent {
-                screen(privateUserInfo = viewModel.privateUserInfo, publicUserInfo = viewModel.publicUserInfo)
+                val openDialog = remember { mutableStateOf(false) }
+                Scaffold(
+                    topBar = {
+                        UserTopBar(onLogOutClicked = { openDialog.value = true })
+                    }
+                ) {
+                    val antiWarning = it
+                    if (openDialog.value) {
+                        AlertDialog(
+                            onDismissRequest = {
+                                openDialog.value = false
+                            },
+                            title = { Text(text = stringResource(id = R.string.action_confirmation)) },
+                            text = { Text(stringResource(id = R.string.logout_confirmation)) },
+                            confirmButton = {
+                                Button(
+                                    //modifier = Modifier.weight(1f),
+                                    onClick = {
+                                        viewModel.logout()
+                                        openDialog.value = false },
+                                    content = {
+                                        Text(stringResource(id = R.string.logout))
+                                    }
+                                )
+                            },
+                            dismissButton = {
+                                Button(
+                                    //modifier = Modifier.weight(1f),
+                                    onClick = { openDialog.value = false }
+                                ) {
+                                    Text(stringResource(id = R.string.cancel))
+                                }
+                            }
+                        )
+                    }
+                    screen(privateUserInfo = viewModel.privateUserInfo, publicUserInfo = viewModel.publicUserInfo)
+                }
             }
         }
     }
-    
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun UserTopBar(
+        onLogOutClicked: () -> Unit
+    ){
+        TopAppBar(
+            title = {
+                Text(
+                    text = stringResource(id = R.string.user),
+                    color = Color.White
+                )
+            },
+            colors = TopAppBarDefaults.smallTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            ),
+            actions = {
+                IconButton(onClick = onLogOutClicked) {
+                    Icon(
+                        imageVector = Icons.Default.ExitToApp,
+                        contentDescription = stringResource(id = R.string.logout_icon_description)
+                    )
+                }
+            }
+        )
+    }
     @Composable
     fun screen(privateUserInfo: StateFlow<UserInfo?>,publicUserInfo: StateFlow<PublicUserInfo?>){
         val privateInfoState = privateUserInfo.collectAsState().value
@@ -83,21 +147,21 @@ class UserFragment : Fragment() {
                 Row() {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_outline_location_on_24),
-                        contentDescription = "like icon"
+                        contentDescription = stringResource(id = R.string.location_icon_description)
                     )
                     Text(text = "${userInfo.location}", fontSize = textSizeCommon, color = textColor)
                 }
                 Row() {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_outline_mail_24),
-                        contentDescription = "like icon"
+                        contentDescription = stringResource(id = R.string.mail_icon_description)
                     )
                     Text(text = "${userInfo.email}", fontSize = textSizeCommon, color = textColor)
                 }
                 Row() {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_baseline_download_24),
-                        contentDescription = "like icon"
+                        contentDescription = stringResource(id = R.string.download_icon_description)
                     )
                     Text(text = "${userInfo.downloads}", fontSize = textSizeCommon, color = textColor)
                 }
@@ -178,7 +242,7 @@ class UserFragment : Fragment() {
                     if (isLiked) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
-                            contentDescription = "like icon",
+                            contentDescription = stringResource(id = R.string.like_icon_description),
                             tint = Color.Red,
                             modifier = Modifier.clickable { isLiked=!isLiked }
                         )
@@ -186,7 +250,7 @@ class UserFragment : Fragment() {
                     else {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
-                            contentDescription = "like icon",
+                            contentDescription = stringResource(id = R.string.like_icon_description),
                             tint = Color.White,
                             modifier = Modifier.clickable { isLiked=!isLiked }
                         )
@@ -237,7 +301,7 @@ class UserFragment : Fragment() {
                 color = Color.Red
             )
             OutlinedButton(onClick = onClickRetry) {
-                Text(text = "Try again")
+                Text(text = stringResource(id = R.string.try_again))
             }
         }
     }

@@ -22,9 +22,7 @@ import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.End
@@ -37,10 +35,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
@@ -50,8 +50,10 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -61,26 +63,18 @@ class PhotoDetailedInfoFragment : Fragment() {
     private val viewModel:PhotoDetailedInfoFragmentViewModel by viewModels()
     private var photoId:String? = null
 
-    /*private val launcherDownload : (String) -> Unit = {imageURL->
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){ map->
-            if (map.values.all { it }){
-                viewModel.downloadImage(imageURL)
-            }
-            else {
-                Toast.makeText(context,"storage permissions isn't granted", Toast.LENGTH_LONG).show()
-            }
 
-        }
-    }*/
     val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){map->
         Log.d("MyLog","$map")
         if (map.values.all { it }){
             Toast.makeText(context,"storage permissions granted", Toast.LENGTH_LONG).show()
+            viewModel.download()
         }
         else {
             Toast.makeText(context,"storage permissions isn't granted", Toast.LENGTH_LONG).show()
         }
     }
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -90,11 +84,56 @@ class PhotoDetailedInfoFragment : Fragment() {
         //lsdA8QpWN_A id example
         photoId?.let { viewModel.getPhotoById(it)}
         // Inflate the layout for this fragment
+        /*viewModel.status.observe(viewLifecycleOwner, Observer { status ->
+            status?.let {
+                //Reset status value at first to prevent multitriggering
+                //and to be available to trigger action again
+                if (it){
+                    viewModel.status.value = null
+                    
+                }
+                //Display Toast or snackbar
+            }
+        })*/
         return ComposeView(requireContext()).apply {
             setContent {
-                screen(detailedPhotoInfo = viewModel.detailedPhotoInfo)
+                all(detailedPhotoInfo = viewModel.detailedPhotoInfo)
             }
         }
+    }
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun all(detailedPhotoInfo: StateFlow<DetailedPhotoInfo?>){
+        val snackbarHostState = remember { SnackbarHostState() }
+        val coroutineScope: CoroutineScope = rememberCoroutineScope()
+        viewModel.status.observe(viewLifecycleOwner, Observer { status ->
+            status?.let {
+                //Reset status value at first to prevent multitriggering
+                //and to be available to trigger action again
+                if (it){
+                    viewModel.status.value = null
+                    coroutineScope.launch {
+                        val snackbarResult = snackbarHostState.showSnackbar(
+                            message = "image saved",
+                            actionLabel = "show in gallery"
+                        )
+                        when (snackbarResult) {
+                            SnackbarResult.Dismissed -> TODO()
+                            SnackbarResult.ActionPerformed -> viewModel.openGallery()
+                        }
+                    }
+                }
+                //Display Toast or snackbar
+            }
+        })
+        Scaffold(
+            content = {
+                val a = it
+                screen(detailedPhotoInfo = detailedPhotoInfo)
+            },
+            snackbarHost = { SnackbarHost(snackbarHostState) }
+
+        )
     }
     @Composable
     fun screen(detailedPhotoInfo: StateFlow<DetailedPhotoInfo?>){
@@ -184,7 +223,7 @@ class PhotoDetailedInfoFragment : Fragment() {
                 Text(text = "${stringResource(id = R.string.download)} (${detailedPhotoInfo.downloads})",color = textColor, fontSize = textSizeCommon)
                 Icon(painter = painterResource(id = R.drawable.ic_baseline_download_24), contentDescription = "download icon", tint = Color.Black,
                     modifier = Modifier.clickable {
-                        downloadPhoto(detailedPhotoInfo.urls?.raw.toString())
+                        launcher.launch(REQUEST_PERMISSIONS)
                     })
                 Icon(painter = painterResource(id = R.drawable.ic_baseline_share_24), contentDescription = "share icon", tint = Color.Black,
                     modifier = Modifier.clickable {
@@ -197,99 +236,7 @@ class PhotoDetailedInfoFragment : Fragment() {
 
         }
     }
-    private fun downloadPhoto(imageURL:String){
-        val isAllGranted = REQUEST_PERMISSIONS.all { permission->
-            context?.let { ContextCompat.checkSelfPermission(it,permission) } == PackageManager.PERMISSION_GRANTED }
-        if (isAllGranted){
-            Toast.makeText(context,"storage permission is Granted",Toast.LENGTH_LONG).show()
-            //viewModel.downloadImage(imageURL)
-        }
-        else{
-            /*val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){map->
-                if (map.values.all { it }){
-                    viewModel.downloadImage(imageURL)
-                }
-                else {
-                    Toast.makeText(context,"storage permissions isn't granted", Toast.LENGTH_LONG).show()
-                }
-            }*/
 
-            launcher.launch(REQUEST_PERMISSIONS)
-        }
-
-        //viewModel.downloadImage(imageURL)
-        downloadImage(imageURL)
-    }
-    /*private val launcherDownload : (String) -> Unit = {imageURL->
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){ map->
-            if (map.values.all { it }){
-                viewModel.downloadImage(imageURL)
-            }
-            else {
-                Toast.makeText(context,"storage permissions isn't granted", Toast.LENGTH_LONG).show()
-            }
-        }
-    }*/
-    fun Context.getAppName(): String = applicationInfo.loadLabel(packageManager).toString()
-    fun downloadImage(imageURL: String) {
-        Log.d("MyLog","view model downloading image")
-        val dirPath = Environment.getExternalStorageDirectory().absolutePath + "/" + requireContext().getAppName().replace(" ","") + "/"
-        Log.d("MyLog","dirPath:$dirPath")
-        val dir = File(dirPath)
-        val fileName = imageURL.substring(imageURL.lastIndexOf('/') + 1)
-        Glide.with(requireContext())
-            .load(imageURL)
-            .into(object : CustomTarget<Drawable?>() {
-                override fun onResourceReady(
-                    resource: Drawable,
-                    transition: Transition<in Drawable?>?
-                ) {
-                    val bitmap = (resource as BitmapDrawable).bitmap
-                    Toast.makeText(context, "Saving Image...", Toast.LENGTH_SHORT).show()
-                    saveImage(bitmap, dir, fileName)
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {}
-                override fun onLoadFailed(errorDrawable: Drawable?) {
-                    super.onLoadFailed(errorDrawable)
-                    Toast.makeText(
-                        context,
-                        "Failed to Download Image! Please try again later.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-    }
-    private fun saveImage(image: Bitmap, storageDir: File, imageFileName: String) {
-        var successDirCreated = true
-        Log.d("MyLog","storageDir.exists():${storageDir.exists()} ")
-        if (!storageDir.exists()) {
-            Log.d("MyLog","!storageDir.exists()")
-            successDirCreated = storageDir.mkdir()
-        }
-        if (successDirCreated) {
-            val imageFile = File(storageDir, "aaaaaaaaaa")
-            Log.d("MyLog","storageDir.absolutePath: "+storageDir.absolutePath)
-            Log.d("MyLog","imageFileName: "+imageFileName)
-            val savedImagePath = imageFile.absolutePath
-            val fOut: OutputStream = FileOutputStream(imageFile)
-            image.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
-            fOut.close()
-            Toast.makeText(context, "Image Saved!", Toast.LENGTH_SHORT).show()
-            /*try {
-                val fOut: OutputStream = FileOutputStream(imageFile)
-                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
-                fOut.close()
-                Toast.makeText(context, "Image Saved!", Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
-                Toast.makeText(context, "Error while saving image!", Toast.LENGTH_SHORT)
-                    .show()
-                e.printStackTrace()
-            }*/
-        } else {
-            Toast.makeText(context, "Failed to make folder!", Toast.LENGTH_SHORT).show()
-        }
-    }
     companion object{
         const val PHOTO_ID_KEY = "photoIdKey"
         private val REQUEST_PERMISSIONS:Array<String> = buildList {

@@ -67,7 +67,7 @@ class PhotosFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 //PhotosList(photos = viewModel.pagedPhotos)
-                Scaffold(
+                /*Scaffold(
                     topBar = {
                         PhotosTopBar(
                             onSearchClicked = {
@@ -81,7 +81,7 @@ class PhotosFragment : Fragment() {
                         val warning = it
                         PhotosList(photos = viewModel.pagedPhotos)
                     }
-                )
+                )*/
             }
         }
     }

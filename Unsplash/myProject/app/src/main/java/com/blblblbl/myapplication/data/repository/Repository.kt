@@ -74,6 +74,9 @@ class Repository @Inject constructor(
     suspend fun unlike(id: String){
         repositoryApi.unlike(id)
     }
+    suspend fun clearDB(){
+        repositoryDataBase.db.photoDao().clear()
+    }
     companion object{
         const val ITEMS_PER_PAGE:Int = 10
     }

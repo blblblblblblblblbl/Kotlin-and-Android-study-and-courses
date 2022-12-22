@@ -27,6 +27,13 @@ class PersistantStorage @Inject constructor(
         editor!!.putString(name, value)
         editor!!.apply()
     }
+    fun clear() {
+        if (sharedPreferences == null) {
+            init()
+        }
+        editor!!.clear()
+        editor!!.apply()
+    }
 
     fun getProperty(name: String?): String? {
         if (sharedPreferences == null) {
