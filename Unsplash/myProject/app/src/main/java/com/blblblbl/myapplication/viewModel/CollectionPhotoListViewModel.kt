@@ -10,13 +10,16 @@ import com.blblblbl.myapplication.data.PhotosPagingSource
 import com.blblblbl.myapplication.data.data_classes.photos.Photo
 import com.blblblbl.myapplication.data.repository.CollectionPhotoPagingSource
 import com.blblblbl.myapplication.domain.GetPhotosUseCase
+import com.blblblbl.myapplication.domain.LikeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CollectionPhotoListViewModel @Inject constructor(
-    private val collectionPhotosPagingSource: CollectionPhotoPagingSource
+    private val collectionPhotosPagingSource: CollectionPhotoPagingSource,
+    private val likeUseCase: LikeUseCase
 ):ViewModel() {
     lateinit var pagedPhotos: Flow<PagingData<Photo>>
     fun getCollectionPhotos(id:String){
@@ -25,5 +28,15 @@ class CollectionPhotoListViewModel @Inject constructor(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = { collectionPhotosPagingSource }
         ).flow.cachedIn(viewModelScope)
+    }
+    fun changeLike(id: String, bool:Boolean){
+        viewModelScope.launch {
+            if (bool){
+                likeUseCase.like(id)
+            }
+            else{
+                likeUseCase.unlike(id)
+            }
+        }
     }
 }

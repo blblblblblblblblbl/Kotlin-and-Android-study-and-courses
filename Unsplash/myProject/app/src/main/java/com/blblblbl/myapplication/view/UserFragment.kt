@@ -1,6 +1,7 @@
 package com.blblblbl.myapplication.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -89,7 +91,10 @@ class UserFragment : Fragment() {
                             }
                         )
                     }
-                    screen(privateUserInfo = viewModel.privateUserInfo, publicUserInfo = viewModel.publicUserInfo)
+                    Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
+                        screen(privateUserInfo = viewModel.privateUserInfo, publicUserInfo = viewModel.publicUserInfo)
+                    }
+
                 }
             }
         }
@@ -99,6 +104,7 @@ class UserFragment : Fragment() {
     fun UserTopBar(
         onLogOutClicked: () -> Unit
     ){
+
         TopAppBar(
             title = {
                 Text(
@@ -141,30 +147,40 @@ class UserFragment : Fragment() {
         Row() {
             GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape))
             Column() {
+                Log.d("MyLog","User:${userInfo}")
                 Text(text = "${userInfo.firstName} ${userInfo.lastName}", color = textColor, fontSize = textSizeName, fontWeight = FontWeight.Bold)
                 Text(text = "${userInfo.username}",color = textColor, fontSize = textSizeUserName)
-                Text(text = "${userInfo.bio}", fontSize = textSizeCommon, modifier = Modifier.padding(top = 15.dp, bottom = 15.dp), fontWeight = FontWeight.Bold,color = textColor)
-                Row() {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_outline_location_on_24),
-                        contentDescription = stringResource(id = R.string.location_icon_description)
-                    )
-                    Text(text = "${userInfo.location}", fontSize = textSizeCommon, color = textColor)
+                userInfo.bio?.let{bio->
+                    Text(text = "${bio}", fontSize = textSizeCommon, modifier = Modifier.padding(top = 15.dp, bottom = 15.dp), fontWeight = FontWeight.Bold,color = textColor)
                 }
-                Row() {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_outline_mail_24),
-                        contentDescription = stringResource(id = R.string.mail_icon_description)
-                    )
-                    Text(text = "${userInfo.email}", fontSize = textSizeCommon, color = textColor)
+                userInfo.location?.let { location->
+                    Row() {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_outline_location_on_24),
+                            contentDescription = stringResource(id = R.string.location_icon_description)
+                        )
+                        Text(text = "${location}", fontSize = textSizeCommon, color = textColor)
+                    }
                 }
-                Row() {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_baseline_download_24),
-                        contentDescription = stringResource(id = R.string.download_icon_description)
-                    )
-                    Text(text = "${userInfo.downloads}", fontSize = textSizeCommon, color = textColor)
+                userInfo.email?.let { email->
+                    Row() {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_outline_mail_24),
+                            contentDescription = stringResource(id = R.string.mail_icon_description)
+                        )
+                        Text(text = "${email}", fontSize = textSizeCommon, color = textColor)
+                    }
                 }
+                userInfo.downloads?.let {downloads->
+                    Row() {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_baseline_download_24),
+                            contentDescription = stringResource(id = R.string.download_icon_description)
+                        )
+                        Text(text = "${downloads}", fontSize = textSizeCommon, color = textColor)
+                    }
+                }
+
             }
         }
     }
@@ -244,7 +260,10 @@ class UserFragment : Fragment() {
                             painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
                             contentDescription = stringResource(id = R.string.like_icon_description),
                             tint = Color.Red,
-                            modifier = Modifier.clickable { isLiked=!isLiked }
+                            modifier = Modifier.clickable {
+                                isLiked=!isLiked
+                                photo.id?.let {viewModel.changeLike(it,isLiked)  }
+                            }
                         )
                     }
                     else {
@@ -252,7 +271,10 @@ class UserFragment : Fragment() {
                             painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
                             contentDescription = stringResource(id = R.string.like_icon_description),
                             tint = Color.White,
-                            modifier = Modifier.clickable { isLiked=!isLiked }
+                            modifier = Modifier.clickable {
+                                isLiked=!isLiked
+                                photo.id?.let {viewModel.changeLike(it,isLiked)  }
+                            }
                         )
                     }
                 }

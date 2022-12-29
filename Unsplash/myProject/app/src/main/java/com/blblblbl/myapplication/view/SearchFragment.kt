@@ -73,8 +73,9 @@ class SearchFragment : Fragment() {
                         )
                     },
                     content = {
-                        val warning = it
-                        PhotoList(photos = searchedImages)
+                        Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
+                            PhotoList(photos = searchedImages)
+                        }
                     }
                 )
             }
@@ -239,7 +240,10 @@ class SearchFragment : Fragment() {
                             painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
                             contentDescription = "like icon",
                             tint = Color.Red,
-                            modifier = Modifier.clickable { isLiked=!isLiked }
+                            modifier = Modifier.clickable {
+                                isLiked=!isLiked
+                                photo.id?.let {viewModel.changeLike(it,isLiked)  }
+                            }
                         )
                     }
                     else {
@@ -247,7 +251,10 @@ class SearchFragment : Fragment() {
                             painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
                             contentDescription = "like icon",
                             tint = Color.White,
-                            modifier = Modifier.clickable { isLiked=!isLiked }
+                            modifier = Modifier.clickable {
+                                isLiked=!isLiked
+                                photo.id?.let {viewModel.changeLike(it,isLiked)  }
+                            }
                         )
                     }
                 }

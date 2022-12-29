@@ -1,7 +1,7 @@
 package com.blblblbl.myapplication.data.repository
 
 import android.util.Log
-import com.blblblbl.myapplication.data.PersistantStorage
+import com.blblblbl.myapplication.data.persistant_sorage.PersistantStorage
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.data.data_classes.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
@@ -11,7 +11,6 @@ import com.example.example.UserInfo
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header

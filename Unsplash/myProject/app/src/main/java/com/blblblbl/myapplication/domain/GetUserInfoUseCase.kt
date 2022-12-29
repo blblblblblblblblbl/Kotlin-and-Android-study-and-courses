@@ -8,10 +8,15 @@ import javax.inject.Inject
 class GetUserInfoUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    suspend fun getPrivateUserInfo():UserInfo{
+    suspend fun getPrivateUserInfo():UserInfo?{
         return repository.getUserInfo()
     }
-    suspend fun getPublicUserInfo(username:String):PublicUserInfo{
-        return repository.getPublicUserInfo(username)
+    suspend fun getPublicUserInfo(username:String):PublicUserInfo?{
+        try {
+            return repository.getPublicUserInfo(username)
+        }
+        catch (e:Throwable){
+            return null
+        }
     }
 }

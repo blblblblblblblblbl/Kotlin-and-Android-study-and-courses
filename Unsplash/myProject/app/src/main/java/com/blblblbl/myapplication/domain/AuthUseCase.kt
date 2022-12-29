@@ -4,8 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
-import com.blblblbl.myapplication.MainActivity
-import com.blblblbl.myapplication.data.PersistantStorage
+import com.blblblbl.myapplication.data.persistant_sorage.PersistantStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import net.openid.appauth.*
 import javax.inject.Inject

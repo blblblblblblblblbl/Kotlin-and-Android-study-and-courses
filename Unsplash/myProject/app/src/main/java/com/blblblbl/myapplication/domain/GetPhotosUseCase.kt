@@ -1,10 +1,8 @@
 package com.blblblbl.myapplication.domain
 
-import com.blblblbl.myapplication.data.PersistantStorage
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.data.repository.Repository
 import com.blblblbl.myapplication.data.data_classes.photos.Photo
-import com.blblblbl.myapplication.data.repository.RepositoryApi
 import javax.inject.Inject
 
 class GetPhotosUseCase @Inject constructor(

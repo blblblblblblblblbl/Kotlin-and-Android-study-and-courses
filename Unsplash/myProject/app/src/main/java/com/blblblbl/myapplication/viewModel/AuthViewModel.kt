@@ -7,7 +7,9 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
+import com.blblblbl.myapplication.AuthActivity
 import com.blblblbl.myapplication.MainActivity
+import com.blblblbl.myapplication.data.persistant_sorage.PersistantStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import net.openid.appauth.*
@@ -15,7 +17,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(@ApplicationContext context: Context):ViewModel() {
+class AuthViewModel @Inject constructor(
+    @ApplicationContext context: Context,
+    private val persistantStorage: PersistantStorage
+):ViewModel() {
     val serviceConfig = AuthorizationServiceConfiguration(
         Uri.parse("https://unsplash.com/oauth/authorize"),  // authorization endpoint
         Uri.parse("https://unsplash.com/oauth/token")) // token endpoint
@@ -31,15 +36,45 @@ class AuthViewModel @Inject constructor(@ApplicationContext context: Context):Vi
         .build()
     var context = context
     var authService = AuthorizationService(context)
+    fun rememberedAuth(){
+        val token =persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        if (token!=null){
+            Log.d("MyLog","token exist: $token")
+            val intent = Intent(context, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent);
+        }
+    }
     fun auth(){
-        Log.d("MyLog","auth_button_click")
-        val intent = Intent(context, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent);
         authService.performAuthorizationRequest(
             authRequest,
             //PendingIntent.getActivity(this, 0, Intent(this, MyAuthCompleteActivity::class.java), 0),
-            PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))
+            PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE),
+            PendingIntent.getActivity(context, 0, Intent(context, AuthActivity::class.java), PendingIntent.FLAG_IMMUTABLE))
+        /*val token =persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        if (token!=null){
+            Log.d("MyLog","token exist: $token")
+            val intent = Intent(context, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent);
+        }
+        else{
+            authService.performAuthorizationRequest(
+                authRequest,
+                //PendingIntent.getActivity(this, 0, Intent(this, MyAuthCompleteActivity::class.java), 0),
+                PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0),
+                PendingIntent.getActivity(context, 0, Intent(context, AuthActivity::class.java), 0))
+        }*/
+        Log.d("MyLog","auth_button_click")
+       /* val intent = Intent(context, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent);*/
+        /*authService.performAuthorizationRequest(
+            authRequest,
+            //PendingIntent.getActivity(this, 0, Intent(this, MyAuthCompleteActivity::class.java), 0),
+            PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0),
+            PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))*/
+
     }
 
     companion object{

@@ -1,16 +1,11 @@
 package com.blblblbl.myapplication.view
 
 import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +13,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -35,28 +29,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
-import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.viewModel.PhotoDetailedInfoFragmentViewModel
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+
 
 @AndroidEntryPoint
 class PhotoDetailedInfoFragment : Fragment() {
@@ -173,7 +158,10 @@ class PhotoDetailedInfoFragment : Fragment() {
                             painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
                             contentDescription = "like icon",
                             tint = Color.Red,
-                            modifier = Modifier.clickable { isLiked=!isLiked }
+                            modifier = Modifier.clickable {
+                                isLiked=!isLiked
+                                detailedPhotoInfo.id?.let {viewModel.changeLike(it,isLiked)  }
+                            }
                         )
                     }
                     else {
@@ -181,7 +169,10 @@ class PhotoDetailedInfoFragment : Fragment() {
                             painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
                             contentDescription = "like icon",
                             tint = Color.White,
-                            modifier = Modifier.clickable { isLiked=!isLiked }
+                            modifier = Modifier.clickable {
+                                isLiked=!isLiked
+                                detailedPhotoInfo.id?.let {viewModel.changeLike(it,isLiked)  }
+                            }
                         )
                     }
                 }
@@ -194,31 +185,54 @@ class PhotoDetailedInfoFragment : Fragment() {
         val textSizeCommon = 15.sp
         val textSizeHashTag = 10.sp
         Column(modifier = Modifier.padding(10.dp)) {
-            Row() {
-                Icon(painter = painterResource(id = R.drawable.ic_outline_location_on_24), contentDescription = "location icon", tint = Color.Black)
-                Text(text = "${detailedPhotoInfo.location?.city}", color = textColor, fontSize = textSizeCommon)
+            detailedPhotoInfo.location?.let { location->
+                if (location.city!=null||location.country!=null||(location.position!=null&&location.position?.latitude!=null&&location.position?.longitude!=null)){
+                    Row() {
+                        Icon(painter = painterResource(id = R.drawable.ic_outline_location_on_24), contentDescription = "location icon", tint = Color.Black,
+                            modifier = Modifier.clickable {
+                                val latitude = location.position?.latitude
+                                val longitude  = location.position?.longitude
+                                Log.d("MyLog","geo:${location.position}")
+                                if (latitude!=null &&longitude!=null){
+                                    val intent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("geo:$latitude,$longitude")
+                                    )
+                                    startActivity(intent)
+                                }
+                            })
+                        Text(text = "${location.city?:""} ${location.country?:""}", color = textColor, fontSize = textSizeCommon)
+                    }
+                }
             }
+
             var hashTags:String = ""
             detailedPhotoInfo.tags.forEach {
                 hashTags += "#${it.title}"
             }
-            Text(text = hashTags, color = textColor, fontSize = textSizeCommon, modifier = Modifier.padding(20.dp))
-            Row() {
-                val exif = detailedPhotoInfo.exif
-                Column() {
-                    Text(text = "${stringResource(id = R.string.made_with_camera)}: ${exif?.make}",color = textColor, fontSize = textSizeCommon)
-                    Text(text = "${stringResource(id = R.string.camera_Model)}: ${exif?.model}",color = textColor, fontSize = textSizeCommon)
-                    Text(text = "${stringResource(id = R.string.exposure)}: ${exif?.exposureTime}",color = textColor, fontSize = textSizeCommon)
-                    Text(text = "${stringResource(id = R.string.aperture)}: ${exif?.aperture}",color = textColor, fontSize = textSizeCommon)
-                    Text(text = "${stringResource(id = R.string.focal_length)}: ${exif?.focalLength}",color = textColor, fontSize = textSizeCommon)
-                    Text(text = "${stringResource(id = R.string.iso)}: ${exif?.iso}",color = textColor, fontSize = textSizeCommon)
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Column() {
-                    Text(text = "${stringResource(id = R.string.about)} @${detailedPhotoInfo.user?.username}:",color = textColor, fontSize = textSizeCommon)
-                    Text(text = "${detailedPhotoInfo.user?.bio}:",color = textColor, fontSize = textSizeCommon)
+            if (hashTags!="") Text(text = hashTags, color = textColor, fontSize = textSizeCommon, modifier = Modifier.padding(20.dp))
+            detailedPhotoInfo.exif?.let {exif->
+                Row() {
+                    //val exif = detailedPhotoInfo.exif
+                    Column() {
+                        exif.make?.let { make-> Text(text = "${stringResource(id = R.string.made_with_camera)}: ${make}",color = textColor, fontSize = textSizeCommon) }
+                        exif.model?.let {model->Text(text = "${stringResource(id = R.string.camera_Model)}: ${model}",color = textColor, fontSize = textSizeCommon)}
+                        exif.exposureTime?.let {exposureTime->Text(text = "${stringResource(id = R.string.exposure)}: ${exposureTime}",color = textColor, fontSize = textSizeCommon)}
+                        exif.aperture?.let {aperture->Text(text = "${stringResource(id = R.string.aperture)}: ${aperture}",color = textColor, fontSize = textSizeCommon)}
+                        exif.focalLength?.let {focalLength->Text(text = "${stringResource(id = R.string.focal_length)}: ${focalLength}",color = textColor, fontSize = textSizeCommon)}
+                        exif.iso?.let {iso->Text(text = "${stringResource(id = R.string.iso)}: ${iso}",color = textColor, fontSize = textSizeCommon)}
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    detailedPhotoInfo.user?.bio?.let { bio->
+                        Column() {
+                            Text(text = "${stringResource(id = R.string.about)} @${detailedPhotoInfo.user?.username}:",color = textColor, fontSize = textSizeCommon)
+                            Text(text = "${bio}:",color = textColor, fontSize = textSizeCommon)
+                        }
+                    }
+
                 }
             }
+
             Row(modifier = Modifier.align(End)) {
                 Text(text = "${stringResource(id = R.string.download)} (${detailedPhotoInfo.downloads})",color = textColor, fontSize = textSizeCommon)
                 Icon(painter = painterResource(id = R.drawable.ic_baseline_download_24), contentDescription = "download icon", tint = Color.Black,

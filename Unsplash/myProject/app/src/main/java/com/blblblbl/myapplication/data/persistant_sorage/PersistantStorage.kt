@@ -1,7 +1,9 @@
-package com.blblblbl.myapplication.data
+package com.blblblbl.myapplication.data.persistant_sorage
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.blblblbl.myapplication.data.persistant_sorage.utils.StorageConverter
+import com.example.example.UserInfo
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,6 +29,16 @@ class PersistantStorage @Inject constructor(
         editor!!.putString(name, value)
         editor!!.apply()
     }
+    fun addProperty(name: String?, userInfo: UserInfo?) {
+        if (sharedPreferences == null) {
+            init()
+        }
+        val value = userInfo?.let {
+            StorageConverter.userInfoToJson(it)
+        }
+        editor!!.putString(name, value)
+        editor!!.apply()
+    }
     fun clear() {
         if (sharedPreferences == null) {
             init()
@@ -44,5 +56,6 @@ class PersistantStorage @Inject constructor(
     companion object{
         const val STORAGE_NAME = "StorageName"
         const val AUTH_TOKEN = "lastsearch"
+        const val USER_INFO = "userinfo"
     }
 }

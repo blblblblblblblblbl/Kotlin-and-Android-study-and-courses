@@ -124,7 +124,10 @@ class CollectionPhotoListFragment : Fragment() {
                             painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
                             contentDescription = "like icon",
                             tint = Color.Red,
-                            modifier = Modifier.clickable { isLiked=!isLiked }
+                            modifier = Modifier.clickable {
+                                isLiked=!isLiked
+                                photo.id?.let {viewModel.changeLike(it,isLiked)  }
+                            }
                         )
                     }
                     else {
@@ -132,7 +135,10 @@ class CollectionPhotoListFragment : Fragment() {
                             painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
                             contentDescription = "like icon",
                             tint = Color.White,
-                            modifier = Modifier.clickable { isLiked=!isLiked }
+                            modifier = Modifier.clickable {
+                                isLiked=!isLiked
+                                photo.id?.let {viewModel.changeLike(it,isLiked)  }
+                            }
                         )
                     }
                 }

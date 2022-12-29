@@ -9,6 +9,7 @@ import androidx.paging.cachedIn
 import com.blblblbl.myapplication.data.data_classes.photos.Photo
 import com.blblblbl.myapplication.data.repository.Repository
 import com.blblblbl.myapplication.data.repository.SearchPagingSource
+import com.blblblbl.myapplication.domain.LikeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchFragmentViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: Repository,
+    private val likeUseCase: LikeUseCase
 ):ViewModel() {
 
     private val _searchQuery = mutableStateOf("")
@@ -28,7 +30,16 @@ class SearchFragmentViewModel @Inject constructor(
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
     }
-
+    fun changeLike(id: String, bool:Boolean){
+        viewModelScope.launch {
+            if (bool){
+                likeUseCase.like(id)
+            }
+            else{
+                likeUseCase.unlike(id)
+            }
+        }
+    }
     fun search(query: String) {
         viewModelScope.launch {
             Log.d("MyLog", "viewModel search start, query: \"$query\" ")
