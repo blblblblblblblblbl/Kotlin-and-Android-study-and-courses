@@ -18,13 +18,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.market.myapplication.R
 import com.market.myapplication.data.data_classes.api.Articles
 import com.market.myapplication.viewModel.NewsFragmentViewModel
 import com.skydoves.landscapist.glide.GlideImage
@@ -95,8 +98,11 @@ class NewsFragment : Fragment() {
             .height(IntrinsicSize.Max)
             .padding(10.dp)
             .clickable {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(articles.url))
-                startActivity(browserIntent)
+               /* val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(articles.url))
+                startActivity(browserIntent)*/
+                val bundle = bundleOf()
+                bundle.putParcelable(ArticleDetailedFragment.ARTICLE_KEY,articles)
+                findNavController().navigate(R.id.action_newsFragment_to_articleDetailedFragment,bundle)
             })
         {
             Column() {

@@ -26,5 +26,14 @@
         android:id="@+id/newsFragment"
         android:name="com.market.myapplication.view.NewsFragment"
         android:label="fragment_news"
-        tools:layout="@layout/fragment_news" />
+        tools:layout="@layout/fragment_news" >
+        <action
+            android:id="@+id/action_newsFragment_to_articleDetailedFragment"
+            app:destination="@id/articleDetailedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleDetailedFragment"
+        android:name="com.market.myapplication.view.ArticleDetailedFragment"
+        android:label="fragment_article_detailed"
+        tools:layout="@layout/fragment_article_detailed" />
 </navigation>

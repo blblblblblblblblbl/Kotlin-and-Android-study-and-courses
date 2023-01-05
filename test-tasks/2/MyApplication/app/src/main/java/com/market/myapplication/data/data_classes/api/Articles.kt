@@ -1,8 +1,10 @@
 package com.market.myapplication.data.data_classes.api
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-
+@Parcelize
 data class Articles (
 
   @SerializedName("source"      ) var source      : Source? = Source(),
@@ -14,4 +16,4 @@ data class Articles (
   @SerializedName("publishedAt" ) var publishedAt : String? = null,
   @SerializedName("content"     ) var content     : String? = null
 
-)
+):Parcelable
