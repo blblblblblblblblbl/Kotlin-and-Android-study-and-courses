@@ -47,8 +47,6 @@ class WebViewFragment : Fragment() {
     }
     @Composable
     fun WebViewPage(url: String){
-
-        var backEnabled by remember { mutableStateOf(false) }
         var webView: WebView? = null
 
         AndroidView(
@@ -63,24 +61,17 @@ class WebViewFragment : Fragment() {
                     // to play video on a web view
                     settings.javaScriptEnabled = true
 
-                    webViewClient = object : WebViewClient() {
-
-                        override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
-                            backEnabled = view.canGoBack()
-                        }
-
-                    }
+                    webViewClient = WebViewClient()
 
                     loadUrl(url)
                     webView = this
                 }
             }, update = {
                 webView = it
-                //  it.loadUrl(url)
             })
 
 
-        BackHandler(enabled = backEnabled) {
+        BackHandler(enabled = true) {
             webView?.goBack()
         }
 
