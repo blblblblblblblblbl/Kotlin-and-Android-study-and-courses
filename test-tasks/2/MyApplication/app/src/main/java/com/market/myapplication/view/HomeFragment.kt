@@ -52,9 +52,7 @@ class HomeFragment : Fragment() {
                         Log.d("MyLog",remoteConfig.getString(LINK_KEY))
                         Toast.makeText(requireContext(), "Fetch and activate succeeded",
                             Toast.LENGTH_SHORT).show()
-                        val telMgr: TelephonyManager = activity?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager;
-                        val simState = telMgr?.getSimState()?.equals(TelephonyManager.SIM_STATE_READY);
-                        if (link.isEmpty()||checkIsEmu()||!simState!!){
+                        if (link.isEmpty()||viewModel.checkIsEmu()||!viewModel.checkSim()){
                             findNavController().navigate(R.id.action_homeFragment_to_newsFragment)
                         }
                         else {
@@ -73,36 +71,6 @@ class HomeFragment : Fragment() {
         }
 
         return inflater.inflate(R.layout.fragment_home, container, false)
-    }
-    private fun checkIsEmu(): Boolean {
-        if (BuildConfig.DEBUG) return false // when developer use this build on
-        val phoneModel = Build.MODEL
-        val buildProduct = Build.PRODUCT
-        val buildHardware = Build.HARDWARE
-        val brand:String = Build.BRAND;
-        var result = (Build.FINGERPRINT.startsWith("generic")
-                || phoneModel.contains("google_sdk")
-                || phoneModel.lowercase(Locale.getDefault()).contains("droid4x")
-                || phoneModel.contains("Emulator")
-                || phoneModel.contains("Android SDK built for x86")
-                || Build.MANUFACTURER.contains("Genymotion")
-                || buildHardware == "goldfish"
-                || Build.BRAND.contains("google")
-                || Build.SERIAL.contains("unknown")
-                || buildHardware == "vbox86"
-                || buildProduct == "sdk"
-                || buildProduct == "google_sdk"
-                || buildProduct == "sdk_x86"
-                || buildProduct == "vbox86p"
-                || Build.BOARD.lowercase(Locale.getDefault()).contains("nox")
-                || Build.BOOTLOADER.lowercase(Locale.getDefault()).contains("nox")
-                || buildHardware.lowercase(Locale.getDefault()).contains("nox")
-                || buildProduct.lowercase(Locale.getDefault()).contains("nox"))
-        if (result) return true
-        result = result or (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-        if (result) return true
-        result = result or ("google_sdk" == buildProduct)
-        return result
     }
 
     companion object{
