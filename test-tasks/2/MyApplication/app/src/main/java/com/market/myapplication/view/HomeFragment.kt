@@ -55,6 +55,7 @@ class HomeFragment : Fragment() {
                 val bundle = bundleOf()
                 bundle.putString(LINK_KEY,link)
                 findNavController().navigate(R.id.action_homeFragment_to_webViewFragment,bundle)
+                //findNavController().navigate(R.id.action_homeFragment_to_newsFragment)
             }
             else{
                 return ComposeView(requireContext()).apply {

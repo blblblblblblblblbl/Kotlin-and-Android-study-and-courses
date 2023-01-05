@@ -95,7 +95,7 @@ class NewsFragment : Fragment() {
         Surface(modifier = Modifier
             .fillMaxWidth()
             .border(2.dp, Color.Black)
-            .height(IntrinsicSize.Max)
+            //.height(IntrinsicSize.Max)
             .padding(10.dp)
             .clickable {
                /* val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(articles.url))
