@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
+import com.market.myapplication.data.data_classes.api.Articles
 import com.market.myapplication.databinding.FragmentWebViewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,9 +40,11 @@ class WebViewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        var link: String? = null
+        arguments?.let { link = it.getString(HomeFragment.LINK_KEY)}
         return ComposeView(requireContext()).apply {
             setContent {
-                WebViewPage("https://www.google.com")
+                link?.let {  WebViewPage(it) }
             }
         }
     }
