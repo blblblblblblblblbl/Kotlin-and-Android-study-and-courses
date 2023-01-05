@@ -1,8 +1,11 @@
 package com.market.myapplication.viewModel
 
 import android.content.Context
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.net.ConnectivityManager
 import android.os.Build
 import android.telephony.TelephonyManager
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.market.myapplication.BuildConfig
 import com.market.myapplication.data.persistent_storage.PersistentStorage
@@ -57,5 +60,31 @@ class HomeFragmentViewModel @Inject constructor(
         val telMgr: TelephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager;
         val simState = telMgr?.getSimState()?.equals(TelephonyManager.SIM_STATE_READY);
         return simState?:false
+    }
+    fun isDeviceOnline(): Boolean {
+        val connManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val tagLog = "MyLog"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities =  connManager.getNetworkCapabilities(connManager.activeNetwork)
+            if (networkCapabilities == null) {
+                Log.d(tagLog, "Device Offline")
+                return false
+            }
+            else {
+                Log.d(tagLog, "Device Online")
+                return true
+            }
+        } else {
+            // below Marshmallow
+            val activeNetwork = connManager.activeNetworkInfo
+            if (activeNetwork?.isConnectedOrConnecting == true && activeNetwork.isAvailable) {
+                Log.d(tagLog, "Device Online")
+                return true
+            }
+            else {
+                Log.d(tagLog, "Device Offline")
+                return false
+            }
+        }
     }
 }
