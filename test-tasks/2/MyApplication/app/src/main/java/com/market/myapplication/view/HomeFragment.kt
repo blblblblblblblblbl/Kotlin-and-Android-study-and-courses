@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -20,12 +21,13 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.market.myapplication.BuildConfig
 import com.market.myapplication.R
+import com.market.myapplication.viewModel.HomeFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-
+    private val viewModel:HomeFragmentViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,33 +36,42 @@ class HomeFragment : Fragment() {
         val configSettings = remoteConfigSettings {
             minimumFetchIntervalInSeconds = 60
         }
-        var link:String =""
-        remoteConfig.fetchAndActivate()
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    val updated = task.result
-                    Log.d("MyLog", "Config params updated: $updated")
-                    link = remoteConfig.getString(LINK_KEY)
-                    Log.d("MyLog",remoteConfig.getString(LINK_KEY))
-                    Toast.makeText(requireContext(), "Fetch and activate succeeded",
-                        Toast.LENGTH_SHORT).show()
-                    val telMgr: TelephonyManager = activity?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager;
-                    val simState = telMgr?.getSimState()?.equals(TelephonyManager.SIM_STATE_READY);
-                    if (link.isEmpty()||checkIsEmu()||!simState!!){
+        var link:String = viewModel.getUrl()
+        if (link.isNotEmpty()){
+            val bundle = bundleOf()
+            bundle.putString(LINK_KEY,link)
+            findNavController().navigate(R.id.action_homeFragment_to_webViewFragment,bundle)
+        }
+        else{
+            remoteConfig.fetchAndActivate()
+                .addOnCompleteListener(requireActivity()) { task ->
+                    if (task.isSuccessful) {
+                        val updated = task.result
+                        Log.d("MyLog", "Config params updated: $updated")
+                        link = remoteConfig.getString(LINK_KEY)
+                        Log.d("MyLog",remoteConfig.getString(LINK_KEY))
+                        Toast.makeText(requireContext(), "Fetch and activate succeeded",
+                            Toast.LENGTH_SHORT).show()
+                        val telMgr: TelephonyManager = activity?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager;
+                        val simState = telMgr?.getSimState()?.equals(TelephonyManager.SIM_STATE_READY);
+                        if (link.isEmpty()||checkIsEmu()||!simState!!){
+                            findNavController().navigate(R.id.action_homeFragment_to_newsFragment)
+                        }
+                        else {
+                            viewModel.saveUrl(link)
+                            val bundle = bundleOf()
+                            bundle.putString(LINK_KEY,link)
+                            findNavController().navigate(R.id.action_homeFragment_to_webViewFragment,bundle)
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "Fetch failed",
+                            Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_homeFragment_to_newsFragment)
                     }
-                    else {
-                        val bundle = bundleOf()
-                        bundle.putString(LINK_KEY,link)
-                        findNavController().navigate(R.id.action_homeFragment_to_webViewFragment,bundle)
-                    }
-                } else {
-                    Toast.makeText(requireContext(), "Fetch failed",
-                        Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_homeFragment_to_newsFragment)
                 }
-            }
-        remoteConfig.setConfigSettingsAsync(configSettings)
+            remoteConfig.setConfigSettingsAsync(configSettings)
+        }
+
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
     private fun checkIsEmu(): Boolean {
