@@ -56,7 +56,9 @@ class ArticleDetailedFragment : Fragment() {
         {
             Column(Modifier.verticalScroll(rememberScrollState())) {
                 Text(text = articles.title.toString(), fontSize = textSizeTitle)
-                GlideImage(imageModel = { articles.urlToImage },
+                //mock
+                var resourceId = resources.getIdentifier(articles.urlToImage , "drawable", requireContext().packageName);
+                GlideImage(imageModel = { resourceId },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp))

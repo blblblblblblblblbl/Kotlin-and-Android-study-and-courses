@@ -92,26 +92,38 @@ class NewsFragment : Fragment() {
     fun NewsItem(articles: Articles){
         val textSizeTitle = 20.sp
         val textSizeDescription = 15.sp
+
         Surface(modifier = Modifier
             .fillMaxWidth()
             .border(2.dp, Color.Black)
             //.height(IntrinsicSize.Max)
             .padding(10.dp)
             .clickable {
-               /* val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(articles.url))
+                /* val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(articles.url))
                 startActivity(browserIntent)*/
                 val bundle = bundleOf()
-                bundle.putParcelable(ArticleDetailedFragment.ARTICLE_KEY,articles)
-                findNavController().navigate(R.id.action_newsFragment_to_articleDetailedFragment,bundle)
+                bundle.putParcelable(ArticleDetailedFragment.ARTICLE_KEY, articles)
+                findNavController().navigate(
+                    R.id.action_newsFragment_to_articleDetailedFragment,
+                    bundle
+                )
             })
         {
             Column() {
                 Text(text = articles.title.toString(), fontSize = textSizeTitle)
-                GlideImage(imageModel = { articles.urlToImage },
+                //mock
+                var resourceId = resources.getIdentifier(articles.urlToImage , "drawable", requireContext().packageName);
+                GlideImage(imageModel = { resourceId },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp))
                 Text(text = articles.description.toString(), fontSize = textSizeDescription)
+                Row() {
+                    Text(text = "source: ${articles.source?.name}")
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(text = "date: ${articles.publishedAt?.subSequence(0,9)}")
+                }
+
             }
         }
     }

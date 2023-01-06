@@ -1,19 +1,30 @@
 package com.market.myapplication.data.repository
 
-import android.util.Log
 import com.google.gson.GsonBuilder
+import com.market.myapplication.MyApp
 import com.market.myapplication.data.data_classes.api.NewsResponse
+import com.market.myapplication.data.repository.utils.MockRequestInterceptor
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class RepositoryApi @Inject constructor() {
-    object RetrofitServices{
+class RepositoryApi @Inject constructor(
+) {
+    object RetrofitServices {
         private const val BASE_URL= "https://newsapi.org/v2/"
         private val gson = GsonBuilder().setLenient().create()
         private val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(
+                OkHttpClient.Builder()
+                    .connectTimeout(60L, TimeUnit.SECONDS)
+                    .readTimeout(60L, TimeUnit.SECONDS)
+                    .addInterceptor(MockRequestInterceptor(MyApp.appContext))
+                    .build()
+            )
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         val newsApi:NewsApi = retrofit.create(
@@ -22,6 +33,7 @@ class RepositoryApi @Inject constructor() {
 
 
         interface NewsApi{
+            @Headers("mock:true")
             @GET("top-headlines")
             suspend fun getNews(@Query("page") page:Int,
                                   @Query("pageSize") pageSize:Int=10,
