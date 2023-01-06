@@ -137,6 +137,6 @@ class HomeFragment : Fragment() {
     }
     companion object{
         const val JSON_KEY = "googleServices"
-        const val LINK_KEY = "webViewUrl"
+        const val LINK_KEY = "url"
     }
 }
