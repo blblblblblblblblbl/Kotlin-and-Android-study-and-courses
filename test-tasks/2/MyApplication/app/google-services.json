@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "72901563711",
-    "project_id": "testtask2-b152b",
-    "storage_bucket": "testtask2-b152b.appspot.com"
+    "project_number": "128665897307",
+    "project_id": "gabaof-cf2e4",
+    "storage_bucket": "gabaof-cf2e4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:72901563711:android:18e885456baa0848fa2f8a",
+        "mobilesdk_app_id": "1:128665897307:android:2056f6be3b0897ddfdf27e",
         "android_client_info": {
-          "package_name": "com.market.myapplication"
+          "package_name": "koolga.fonbet"
         }
       },
       "oauth_client": [
         {
-          "client_id": "72901563711-5ud0ottrim61tnj15gav23ejsn5n6mjf.apps.googleusercontent.com",
+          "client_id": "128665897307-rq91951j8qee0gp0bt5325vdjek61gva.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCco8FiImy8Km_-6xmJpGp2DxuV8zZsvzI"
+          "current_key": "AIzaSyAMb-D9U30Q1O2gSGJxKQ2y5cMo8FW3WPU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "72901563711-5ud0ottrim61tnj15gav23ejsn5n6mjf.apps.googleusercontent.com",
+              "client_id": "128665897307-rq91951j8qee0gp0bt5325vdjek61gva.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

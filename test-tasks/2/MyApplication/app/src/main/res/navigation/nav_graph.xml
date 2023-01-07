@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.market.myapplication.view.HomeFragment"
+        android:name="koolga.fonbet.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <fragment
         android:id="@+id/webViewFragment"
-        android:name="com.market.myapplication.view.WebViewFragment"
+        android:name="koolga.fonbet.view.WebViewFragment"
         android:label="fragment_web_view"
         tools:layout="@layout/fragment_web_view" />
     <fragment
         android:id="@+id/newsFragment"
-        android:name="com.market.myapplication.view.NewsFragment"
+        android:name="koolga.fonbet.view.NewsFragment"
         android:label="fragment_news"
         tools:layout="@layout/fragment_news" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/articleDetailedFragment"
-        android:name="com.market.myapplication.view.ArticleDetailedFragment"
+        android:name="koolga.fonbet.view.ArticleDetailedFragment"
         android:label="fragment_article_detailed"
         tools:layout="@layout/fragment_article_detailed" />
 </navigation>

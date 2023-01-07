@@ -18,11 +18,11 @@ plugins {
 }
 apply plugin: 'androidx.navigation.safeargs'
 android {
-    namespace 'com.market.myapplication'
+    namespace 'koolga.fonbet'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.market.myapplication"
+        applicationId "koolga.fonbet"
         minSdk 21
         targetSdk 32
         versionCode 1
