@@ -2,8 +2,8 @@ package koolga.fonbet
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import koolga.fonbet.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import koolga.fonbet.databinding.ActivityMainBinding
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

@@ -64,8 +64,6 @@ class HomeFragment : Fragment() {
                         Log.d("MyLog", "Config params updated: $updated")
                         link = remoteConfig.getString(LINK_KEY)
                         Log.d("MyLog",remoteConfig.getString(LINK_KEY))
-                        Toast.makeText(requireContext(), "Fetch and activate succeeded",
-                            Toast.LENGTH_SHORT).show()
                         if (link.isEmpty()||viewModel.checkIsEmu()||!viewModel.checkSim()){
                             findNavController().navigate(R.id.action_homeFragment_to_newsFragment)
                         }
@@ -76,8 +74,6 @@ class HomeFragment : Fragment() {
                             findNavController().navigate(R.id.action_homeFragment_to_webViewFragment,bundle)
                         }
                     } else {
-                        Toast.makeText(requireContext(), "Fetch failed",
-                            Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_homeFragment_to_newsFragment)
                     }
                 }
