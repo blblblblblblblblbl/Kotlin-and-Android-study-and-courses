@@ -1,6 +1,6 @@
 package com.blblblbl.myapplication.data.persistent_storage.utils
 
-import com.blblblbl.myapplication.data.data_classes.user_info.UserInfo
+import com.blblblbl.myapplication.data.data_classes.responses.user_info.UserInfo
 import com.blblblbl.myapplication.data.repository.database.utils.GsonParser
 import com.blblblbl.myapplication.data.repository.database.utils.JsonParser
 import com.google.gson.GsonBuilder

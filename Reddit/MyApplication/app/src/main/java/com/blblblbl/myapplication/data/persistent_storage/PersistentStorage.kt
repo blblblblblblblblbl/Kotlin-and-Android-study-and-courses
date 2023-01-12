@@ -2,7 +2,7 @@ package com.blblblbl.myapplication.data.persistent_storage
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.blblblbl.myapplication.data.data_classes.user_info.UserInfo
+import com.blblblbl.myapplication.data.data_classes.responses.user_info.UserInfo
 import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
