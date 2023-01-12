@@ -189,17 +189,10 @@ class PhotosFragment : Fragment() {
     @Composable
 
     fun PhotosList(photos: Flow<PagingData<DBPhoto>>) {
-    //fun PhotosList(photos: Flow<PagingData<Photo>>) {
         val lazyPhotosItems: LazyPagingItems<DBPhoto> = photos.collectAsLazyPagingItems()
-        //val lazyPhotosItems: LazyPagingItems<Photo> = photos.collectAsLazyPagingItems()
+
 
         LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2) ){
-            /*items(lazyPhotosItems) {item->
-                if (item != null) {
-                    //PhotoItem(photo = item)
-                    PhotoItem(dbPhoto = item)
-                }
-            }*/
             items(
                 items = lazyPhotosItems,
                 key = {dbPhoto -> dbPhoto.id }
@@ -210,17 +203,7 @@ class PhotosFragment : Fragment() {
                 }
             }
         }
-        /*LazyColumn(){
-            items(
-                items = lazyPhotosItems,
-                key = {dbPhoto -> dbPhoto.id }
-            ) {item->
-                if (item != null) {
-                    //PhotoItem(photo = item)
-                    PhotoItem(dbPhoto = item)
-                }
-            }
-        }*/
+
         lazyPhotosItems.apply {
             when {
                 loadState.refresh is LoadState.Loading -> {
@@ -251,29 +234,9 @@ class PhotosFragment : Fragment() {
         }
     }
 
-    /*@Composable
-    fun PhotoItem(photo: Photo){
-        val textColor = Color.White
-        GlideImage(imageModel = {photo.urls?.regular})
-        val textSizeTotalLikes = 15.sp
-        val textSizeName = 15.sp
-        val textSizeUserName = 10.sp
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            val avatar:String? = photo.user?.profileImage?.large
-            GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape))
-            Column(Modifier.padding(start = 5.dp)) {
-                Text(text = "${photo.user?.name}", color = textColor, fontSize = textSizeName)
-                Text(text = "@${photo.user?.username}", color = textColor, fontSize = textSizeUserName)
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Text(text = "${photo.likes}", color = textColor, fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
-            Icon(painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24), contentDescription = "like icon", tint = Color.White)
-        }
-    }*/
     @Composable
     fun PhotoItem(dbPhoto: DBPhoto){
         val photo = dbPhoto.photo
-    //fun PhotoItem(photo: Photo){
         val textColor = Color.White
         val textSizeTotalLikes = 15.sp
         val textSizeName = 15.sp
@@ -367,8 +330,6 @@ class PhotosFragment : Fragment() {
             }
         }
 
-
-        //PhotoItem(photo = photo)
     }
     @Composable
     fun LoadingView(

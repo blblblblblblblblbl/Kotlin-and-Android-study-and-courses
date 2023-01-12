@@ -94,7 +94,6 @@ class PhotoDetailedInfoFragment : Fragment() {
                         }
                     }
                 }
-                //Display Toast or snackbar
             }
         })
         Scaffold(
