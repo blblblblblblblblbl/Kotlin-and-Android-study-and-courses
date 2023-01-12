@@ -34,6 +34,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.blblblbl.myapplication.R
+import com.blblblbl.myapplication.view.compose_utils.ErrorItem
+import com.blblblbl.myapplication.view.compose_utils.LoadingItem
+import com.blblblbl.myapplication.view.compose_utils.LoadingView
 import com.blblblbl.myapplication.viewModel.CollectionsFragmentViewModel
 import com.example.example.PhotoCollection
 import com.skydoves.landscapist.glide.GlideImage
@@ -146,119 +149,6 @@ class CollectionsFragment : Fragment() {
 
         }
 
-    }
-    /*@Composable
-    fun CustomStaggeredVerticalGrid(
-        modifier: Modifier = Modifier,
-        content: @Composable () -> Unit,
-        numRows:Int
-    ) {
-        Layout(
-            content = content,
-            modifier = modifier
-        ) { measurable, constraints ->
-            // on below line we are creating a variable for our column width.
-            val columnWidth = constraints.maxWidth
-            val rowHeight = constraints.maxHeight/numRows
-
-            // on the below line we are creating and initializing our items constraint widget.
-            val itemConstraints = constraints.copy(maxWidth = columnWidth, maxHeight = rowHeight)
-
-            // on below line we are creating and initializing our column height
-            val columnHeights = IntArray(numColumns) { 0 }
-
-            // on below line we are creating and initializing placebles
-            val placeables = measurable.map { measurable ->
-                // inside placeble we are creating
-                // variables as column and placebles.
-                val column = testColumn(columnHeights)
-                val placeable = measurable.measure(itemConstraints)
-
-                // on below line we are increasing our column height/
-                columnHeights[column] += placeable.height
-                placeable
-            }
-
-            // on below line we are creating a variable for
-            // our height and specifying height for it.
-            val height =
-                columnHeights.maxOrNull()?.coerceIn(constraints.minHeight, constraints.maxHeight)
-                    ?: constraints.minHeight
-
-            // on below line we are specifying height and width for our layout.
-            layout(
-                width = constraints.maxWidth,
-                height = height
-            ) {
-                // on below line we are creating a variable for column y pointer.
-                val columnYPointers = IntArray(numColumns) { 0 }
-
-                // on below line we are setting x and y for each placeable item
-                placeables.forEach { placeable ->
-                    // on below line we are calling test
-                    // column method to get our column index
-                    val column = testColumn(columnYPointers)
-
-                    placeable.place(
-                        x = columnWidth * column,
-                        y = columnYPointers[column]
-                    )
-
-                    // on below line we are setting
-                    // column y pointer and incrementing it.
-                    columnYPointers[column] += placeable.height
-                }
-            }
-        }
-    }*/
-    
-    
-    
-    @Composable
-    fun LoadingView(
-        modifier: Modifier = Modifier
-    ) {
-        Column(
-            modifier = modifier,
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator()
-        }
-    }
-
-    @Composable
-    fun LoadingItem() {
-        CircularProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .wrapContentWidth(Alignment.CenterHorizontally)
-        )
-    }
-
-    @Composable
-    fun ErrorItem(
-        message: String,
-        modifier: Modifier = Modifier,
-        onClickRetry: () -> Unit
-    ) {
-        Row(
-            modifier = modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = message,
-                maxLines = 1,
-                modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Red
-            )
-            OutlinedButton(onClick = onClickRetry) {
-                Text(text = "Try again")
-            }
-        }
     }
 
 

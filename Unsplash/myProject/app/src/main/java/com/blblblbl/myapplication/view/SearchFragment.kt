@@ -40,6 +40,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
+import com.blblblbl.myapplication.view.compose_utils.ErrorItem
+import com.blblblbl.myapplication.view.compose_utils.LoadingItem
+import com.blblblbl.myapplication.view.compose_utils.LoadingView
 import com.blblblbl.myapplication.viewModel.SearchFragmentViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -258,52 +261,6 @@ class SearchFragment : Fragment() {
                         )
                     }
                 }
-            }
-        }
-    }
-    @Composable
-    fun LoadingView(
-        modifier: Modifier = Modifier
-    ) {
-        Column(
-            modifier = modifier,
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator()
-        }
-    }
-
-    @Composable
-    fun LoadingItem() {
-        CircularProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .wrapContentWidth(Alignment.CenterHorizontally)
-        )
-    }
-
-    @Composable
-    fun ErrorItem(
-        message: String,
-        modifier: Modifier = Modifier,
-        onClickRetry: () -> Unit
-    ) {
-        Row(
-            modifier = modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = message,
-                maxLines = 1,
-                modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Red
-            )
-            OutlinedButton(onClick = onClickRetry) {
-                Text(text = "Try again")
             }
         }
     }
