@@ -60,25 +60,28 @@ class PhotoDetailedInfoFragmentViewModel @Inject constructor(
     }
     fun download(){
         val handler = CoroutineExceptionHandler { _, exception ->
-            val constraints: Constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-            val downloadWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
-                .setInputData(
-                    Data.Builder()
-                        .putString(DownloadWorker.URL,detailedPhotoInfo.value?.urls?.raw)
-                        .putString(DownloadWorker.ID,detailedPhotoInfo.value?.id)
-                        .build())
-                .setConstraints(constraints)
-                .build()
-            WorkManager
-                .getInstance(context)
-                .enqueue(downloadWorkRequest)
+            downloadWithWorkManager()
         }
-        download1(handler)
+        downloadStraight(handler)
 
     }
-    fun download1(handler :CoroutineExceptionHandler){
+    private fun downloadWithWorkManager(){
+        val constraints: Constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        val downloadWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
+            .setInputData(
+                Data.Builder()
+                    .putString(DownloadWorker.URL,detailedPhotoInfo.value?.urls?.raw)
+                    .putString(DownloadWorker.ID,detailedPhotoInfo.value?.id)
+                    .build())
+            .setConstraints(constraints)
+            .build()
+        WorkManager
+            .getInstance(context)
+            .enqueue(downloadWorkRequest)
+    }
+    private fun downloadStraight(handler :CoroutineExceptionHandler){
         CoroutineScope(Dispatchers.IO).launch(handler) {
             detailedPhotoInfo.value?.id?.let { id->
                 saveImage(
