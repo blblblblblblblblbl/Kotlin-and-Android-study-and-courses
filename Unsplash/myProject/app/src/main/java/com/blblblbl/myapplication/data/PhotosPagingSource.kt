@@ -3,7 +3,7 @@ package com.blblblbl.myapplication.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.blblblbl.myapplication.data.repository.Repository
-import com.blblblbl.myapplication.data.data_classes.photos.Photo
+import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import javax.inject.Inject
 
 class PhotosPagingSource @Inject constructor(

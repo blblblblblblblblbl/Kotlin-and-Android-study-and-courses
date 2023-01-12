@@ -9,7 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.blblblbl.myapplication.data.PhotosPagingSource
 import com.blblblbl.myapplication.domain.GetPhotosUseCase
-import com.blblblbl.myapplication.data.data_classes.photos.Photo
+import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.repository.Repository
 import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 import com.blblblbl.myapplication.domain.LikeUseCase
@@ -25,10 +25,6 @@ class PhotosFragmentViewModel @Inject constructor(
     private val repository: Repository,
     private val likeUseCase: LikeUseCase
 ):ViewModel() {
-    /*val pagedPhotos: Flow<PagingData<Photo>> = Pager(
-        config = PagingConfig(pageSize = 10),
-        pagingSourceFactory = { photosPagingSource }
-    ).flow.cachedIn(viewModelScope)*/
     val pagedPhotos: Flow<PagingData<DBPhoto>> =repository.getAllImages()
     fun changeLike(id: String, bool:Boolean){
         viewModelScope.launch {

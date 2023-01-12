@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.blblblbl.myapplication.data.data_classes.photos.Photo
+import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 
 @Dao
@@ -31,6 +31,3 @@ interface PhotoDao {
     @Query("DELETE FROM photos")
     suspend fun clear()
 }
-//f loadAllUsersByPage(2,0) it will return first 2 rows from table.
-//if loadAllUsersByPage(2,1) it will return 2nd and 3rd rows from table.
-//but if loadAllUsersByPage(-1,10) then it will serve first 10 rows from tabl

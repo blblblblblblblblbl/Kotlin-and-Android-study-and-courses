@@ -3,7 +3,7 @@ package com.blblblbl.myapplication.data
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.blblblbl.myapplication.data.data_classes.photos.Photo
+import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.repository.Repository
 import javax.inject.Inject
 
@@ -22,13 +22,6 @@ class LikedPhotosPagingSource @Inject constructor(
             repository.getLikedPhotos(page, userName)
         }.fold(
             onSuccess = {
-                /*it?.let { it1 ->
-                    LoadResult.Page(
-                        data = it1,
-                        prevKey = null,
-                        nextKey =  page+1
-                    )
-                }*/
                 Log.d("MyLog",it.toString())
                 if (it.size==0){
                     LoadResult.Page(

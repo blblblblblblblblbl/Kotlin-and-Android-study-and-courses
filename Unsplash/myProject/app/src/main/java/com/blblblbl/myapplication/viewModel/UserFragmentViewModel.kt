@@ -12,7 +12,7 @@ import androidx.paging.cachedIn
 import com.blblblbl.myapplication.AuthActivity
 import com.blblblbl.myapplication.data.LikedPhotosPagingSource
 import com.blblblbl.myapplication.data.persistant_sorage.PersistantStorage
-import com.blblblbl.myapplication.data.data_classes.photos.Photo
+import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.data.repository.Repository
 import com.blblblbl.myapplication.domain.GetUserInfoUseCase
@@ -61,16 +61,8 @@ class UserFragmentViewModel @Inject constructor(
     }
     fun getUserInfo(){
         viewModelScope.launch {
-            /*Log.d("MyLog","try to get userinfo")
-            val user = getUserInfoUseCase.execute()
-            Log.d("MyLog","userinfo" + user.toString())
-            val a = user.username?.let { repository.getLikedPhotos(1, it) }
-            Log.d("MyLog",a.toString())*/
-
             val privateUser = getUserInfoUseCase.getPrivateUserInfo()
             Log.d("MyLog","User info" + privateUser)
-
-
             privateUser?.username?.let {
                 val publicUser = getUserInfoUseCase.getPublicUserInfo(it)
                 Log.d("MyLog","User info" + publicUser)
@@ -81,9 +73,7 @@ class UserFragmentViewModel @Inject constructor(
                 ).flow.cachedIn(viewModelScope)
                 _publicUserInfo.value = publicUser
                 _privateUserInfo.value = privateUser
-
             }
-
         }
     }
 }

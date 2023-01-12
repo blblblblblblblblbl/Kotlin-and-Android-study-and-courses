@@ -1,7 +1,7 @@
 package com.example.example
 
-import com.blblblbl.myapplication.data.data_classes.photos.Links
-import com.blblblbl.myapplication.data.data_classes.photos.User
+import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Links
+import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.User
 import com.google.gson.annotations.SerializedName
 
 

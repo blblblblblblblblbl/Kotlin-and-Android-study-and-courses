@@ -48,7 +48,6 @@ class PhotoDetailedInfoFragment : Fragment() {
     private val viewModel:PhotoDetailedInfoFragmentViewModel by viewModels()
     private var photoId:String? = null
 
-
     val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){map->
         Log.d("MyLog","$map")
         if (map.values.all { it }){
@@ -59,27 +58,14 @@ class PhotoDetailedInfoFragment : Fragment() {
             Toast.makeText(context,"storage permissions isn't granted", Toast.LENGTH_LONG).show()
         }
     }
-    @OptIn(ExperimentalMaterial3Api::class)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         arguments?.let {photoId = it.getString(PHOTO_ID_KEY)  }
         Log.d("MyLog","photoId: $photoId")
-        //lsdA8QpWN_A id example
         photoId?.let { viewModel.getPhotoById(it)}
-        // Inflate the layout for this fragment
-        /*viewModel.status.observe(viewLifecycleOwner, Observer { status ->
-            status?.let {
-                //Reset status value at first to prevent multitriggering
-                //and to be available to trigger action again
-                if (it){
-                    viewModel.status.value = null
-                    
-                }
-                //Display Toast or snackbar
-            }
-        })*/
         return ComposeView(requireContext()).apply {
             setContent {
                 all(detailedPhotoInfo = viewModel.detailedPhotoInfo)

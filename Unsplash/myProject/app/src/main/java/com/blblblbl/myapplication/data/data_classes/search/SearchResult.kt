@@ -1,6 +1,6 @@
 package com.blblblbl.myapplication.data.data_classes.search
 
-import com.blblblbl.myapplication.data.data_classes.photos.Photo
+import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.google.gson.annotations.SerializedName
 
 data class SearchResult(

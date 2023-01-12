@@ -3,7 +3,7 @@ package com.blblblbl.myapplication.data.repository
 import android.util.Log
 import com.blblblbl.myapplication.data.persistant_sorage.PersistantStorage
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
-import com.blblblbl.myapplication.data.data_classes.photos.Photo
+import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.data.data_classes.search.SearchResult
 import com.example.example.PhotoCollection

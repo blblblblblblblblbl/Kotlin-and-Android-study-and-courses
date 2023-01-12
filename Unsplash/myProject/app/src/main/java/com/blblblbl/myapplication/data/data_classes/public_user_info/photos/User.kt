@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.data.data_classes.photos
+package com.blblblbl.myapplication.data.data_classes.public_user_info.photos
 
 import com.example.example.Links
 import com.example.example.ProfileImage

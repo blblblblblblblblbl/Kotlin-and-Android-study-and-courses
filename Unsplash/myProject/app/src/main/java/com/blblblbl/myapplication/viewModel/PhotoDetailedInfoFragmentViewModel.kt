@@ -80,7 +80,6 @@ class PhotoDetailedInfoFragmentViewModel @Inject constructor(
     }
     fun download1(handler :CoroutineExceptionHandler){
         CoroutineScope(Dispatchers.IO).launch(handler) {
-        //viewModelScope.launch {
             detailedPhotoInfo.value?.id?.let { id->
                 saveImage(
                     Glide.with(context)
@@ -117,8 +116,6 @@ class PhotoDetailedInfoFragmentViewModel @Inject constructor(
                 e.printStackTrace()
             }
             galleryAddPic(savedImagePath)
-
-            //Toast.makeText(context, "IMAGE SAVED", Toast.LENGTH_LONG).show() // to make this working, need to manage coroutine, as this execution is something off the main thread
         }
         return savedImagePath
     }
@@ -134,7 +131,6 @@ class PhotoDetailedInfoFragmentViewModel @Inject constructor(
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             status.postValue(true)
-            //startActivity(context,intent,null)
         }
     }
     fun openGallery(){

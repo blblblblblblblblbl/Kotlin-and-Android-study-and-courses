@@ -48,41 +48,14 @@ class AuthViewModel @Inject constructor(
     fun auth(){
         authService.performAuthorizationRequest(
             authRequest,
-            //PendingIntent.getActivity(this, 0, Intent(this, MyAuthCompleteActivity::class.java), 0),
             PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE),
             PendingIntent.getActivity(context, 0, Intent(context, AuthActivity::class.java), PendingIntent.FLAG_IMMUTABLE))
-        /*val token =persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
-        if (token!=null){
-            Log.d("MyLog","token exist: $token")
-            val intent = Intent(context, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent);
-        }
-        else{
-            authService.performAuthorizationRequest(
-                authRequest,
-                //PendingIntent.getActivity(this, 0, Intent(this, MyAuthCompleteActivity::class.java), 0),
-                PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0),
-                PendingIntent.getActivity(context, 0, Intent(context, AuthActivity::class.java), 0))
-        }*/
         Log.d("MyLog","auth_button_click")
-       /* val intent = Intent(context, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent);*/
-        /*authService.performAuthorizationRequest(
-            authRequest,
-            //PendingIntent.getActivity(this, 0, Intent(this, MyAuthCompleteActivity::class.java), 0),
-            PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0),
-            PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))*/
 
     }
 
     companion object{
-        //1
         const val MY_CLIENT_ID:String ="RoIF7WHVqFj86IPcmNSz_dKxmUaDRGANTaSk9aqnyac"
-        //2
-        //const val MY_CLIENT_ID:String ="Yv9weUh_uPLLfEBUI_zNzh5yJoMuRpXSYyjfAZV66WY"
         const val MY_REDIRECT_URI:String ="myproject://www.exagfdasrvxcmple.com/gizmos"
-        //const val MY_REDIRECT_URI:String ="myproject2://www.exagfdasrvxcmple.com/gizmos"
     }
 }
