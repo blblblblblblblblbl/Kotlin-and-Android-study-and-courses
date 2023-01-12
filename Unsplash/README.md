@@ -43,6 +43,7 @@ This android application works with unspash api
 - Navigation
 - Glide
 - Hilt
+- OkHttpClient to mock Retrofit2 responses
 
 
 
