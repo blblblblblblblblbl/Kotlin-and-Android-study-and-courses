@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.data.persistant_sorage.utils
+package com.blblblbl.myapplication.data.persistent_storage.utils
 
 import com.blblblbl.myapplication.data.repository.database.util.GsonParser
 import com.blblblbl.myapplication.data.repository.database.util.JsonParser

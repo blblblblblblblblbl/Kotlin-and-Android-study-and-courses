@@ -9,7 +9,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import com.blblblbl.myapplication.AuthActivity
 import com.blblblbl.myapplication.MainActivity
-import com.blblblbl.myapplication.data.persistant_sorage.PersistantStorage
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import net.openid.appauth.*
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val persistantStorage: PersistantStorage
+    private val persistentStorage: PersistentStorage
 ):ViewModel() {
     val serviceConfig = AuthorizationServiceConfiguration(
         Uri.parse("https://unsplash.com/oauth/authorize"),  // authorization endpoint
@@ -37,7 +37,7 @@ class AuthViewModel @Inject constructor(
     var context = context
     var authService = AuthorizationService(context)
     fun rememberedAuth(){
-        val token =persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token =persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         if (token!=null){
             Log.d("MyLog","token exist: $token")
             val intent = Intent(context, MainActivity::class.java)

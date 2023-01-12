@@ -11,7 +11,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.blblblbl.myapplication.AuthActivity
 import com.blblblbl.myapplication.data.LikedPhotosPagingSource
-import com.blblblbl.myapplication.data.persistant_sorage.PersistantStorage
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.data.repository.Repository
@@ -32,7 +32,7 @@ class UserFragmentViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val likedPhotosPagingSource: LikedPhotosPagingSource,
     private val repository: Repository,
-    private val persistantStorage: PersistantStorage,
+    private val persistentStorage: PersistentStorage,
     private val likeUseCase: LikeUseCase
 ):ViewModel() {
     lateinit var pagedPhotos: Flow<PagingData<Photo>>
@@ -42,7 +42,7 @@ class UserFragmentViewModel @Inject constructor(
     val publicUserInfo = _publicUserInfo.asStateFlow()
     fun logout(){
         viewModelScope.launch{
-            persistantStorage.clear()
+            persistentStorage.clear()
             repository.clearDB()
             val intent = Intent(context, AuthActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

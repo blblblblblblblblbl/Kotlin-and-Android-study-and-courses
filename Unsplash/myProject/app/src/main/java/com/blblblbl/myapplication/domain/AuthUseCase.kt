@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
-import com.blblblbl.myapplication.data.persistant_sorage.PersistantStorage
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import net.openid.appauth.*
 import javax.inject.Inject
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class AuthUseCase @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val persistantStorage: PersistantStorage
+    private val persistentStorage: PersistentStorage
 ){
     //save token in Persistant storage
     fun execute(redirectUri:Uri){
@@ -38,7 +38,7 @@ class AuthUseCase @Inject constructor(
                         "MyLog",
                         "accessToken:" + resp.accessToken.toString() + "\ntokenType: " + resp.tokenType + "\nscope: " + resp.scopeSet
                     )
-                    persistantStorage.addProperty(PersistantStorage.AUTH_TOKEN,resp.accessToken.toString())
+                    persistentStorage.addProperty(PersistentStorage.AUTH_TOKEN,resp.accessToken.toString())
                     // exchange succeeded
                 } else {
                     Log.d("MyLog", ex.toString())

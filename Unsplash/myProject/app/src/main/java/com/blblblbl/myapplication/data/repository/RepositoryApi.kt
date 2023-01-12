@@ -2,7 +2,7 @@ package com.blblblbl.myapplication.data.repository
 
 import android.util.Log
 import com.blblblbl.myapplication.MyApp
-import com.blblblbl.myapplication.data.persistant_sorage.PersistantStorage
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
@@ -26,7 +26,7 @@ import javax.inject.Singleton
 
 @Singleton
 class RepositoryApi @Inject constructor(
-    private val persistantStorage: PersistantStorage
+    private val persistentStorage: PersistentStorage
 ) {
 
     object RetrofitServices{
@@ -88,55 +88,55 @@ class RepositoryApi @Inject constructor(
     }
 
     suspend fun getPhotosPage(page: Int):List<Photo>{
-        val token = persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog","photos page: "+ page + "token: " + token)
         return RetrofitServices.photosApi.getPhotos(page,10,"Bearer "+token)
     }
     suspend fun getPhotosPage(page: Int, perPage: Int):List<Photo>{
-        val token = persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog","photos page: "+ page + "token: " + token)
         return RetrofitServices.photosApi.getPhotos(page,perPage,"Bearer "+token)
     }
     suspend fun searchPhotos(page:Int, perPage:Int=10,query: String): List<Photo>{
-        val token = persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         val response = RetrofitServices.photosApi.searchPhotos(page,perPage,query,"Bearer "+token)
         Log.d("MyLog","search response: $response")
         return response.results
     }
     suspend fun getCollectionPage(page: Int):List<PhotoCollection>{
-        val token = persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog","collections page: "+ page + "token: " + token)
         return RetrofitServices.collectionsApi.getCollection(page,10,"Bearer "+token)
     }
     suspend fun getUserInfo():UserInfo{
-        val token = persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         return RetrofitServices.userApi.getMe("Bearer "+token)
     }
     suspend fun getPublicUserInfo(username: String):PublicUserInfo{
-        val token = persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         return RetrofitServices.userApi.getPublicUserInfo(username,"Bearer "+token)
     }
 
     suspend fun getLikedPhotosPage(page: Int,username: String):List<Photo>{
-        val token = persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog","photos page: "+ page + "token: " + token)
         return RetrofitServices.photosApi.getLikedPhotos(username,page,10,"Bearer "+token)
     }
 
     suspend fun getPhotoById(id: String): DetailedPhotoInfo {
-        val token = persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         return RetrofitServices.photosApi.getPhotoById(id,"Bearer "+token)
     }
     suspend fun getCollectionPhotoList(id:String,page: Int):List<Photo>{
-        val token = persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         return RetrofitServices.photosApi.getCollectionPhotos(id,page,10,"Bearer "+token)
     }
     suspend fun like(id: String){
-        val token = persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         RetrofitServices.likeApi.like(id,"Bearer "+token)
     }
     suspend fun unlike(id: String){
-        val token = persistantStorage.getProperty(PersistantStorage.AUTH_TOKEN)
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         RetrofitServices.likeApi.unlike(id,"Bearer "+token)
     }
 }

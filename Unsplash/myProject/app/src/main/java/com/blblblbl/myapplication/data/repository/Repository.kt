@@ -7,8 +7,8 @@ import androidx.paging.PagingData
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
-import com.blblblbl.myapplication.data.persistant_sorage.PersistantStorage
-import com.blblblbl.myapplication.data.persistant_sorage.utils.StorageConverter
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
+import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
 import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 import com.example.example.PhotoCollection
 import com.example.example.UserInfo
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class Repository @Inject constructor(
     private val repositoryApi: RepositoryApi,
     private val repositoryDataBase: RepositoryDataBase,
-    private val persistantStorage: PersistantStorage
+    private val persistentStorage: PersistentStorage
 ) {
 
    suspend fun getPhotos(page: Int):List<Photo>{
@@ -61,11 +61,11 @@ class Repository @Inject constructor(
     suspend fun getUserInfo():UserInfo?{
         try {
             val userInfo = repositoryApi.getUserInfo()
-            persistantStorage.addProperty(PersistantStorage.USER_INFO,userInfo)
+            persistentStorage.addProperty(PersistentStorage.USER_INFO,userInfo)
             return userInfo
         }
         catch (e:Throwable){
-            val json = persistantStorage.getProperty(PersistantStorage.USER_INFO)
+            val json = persistentStorage.getProperty(PersistentStorage.USER_INFO)
             val userInfo = StorageConverter.userInfoFromJson(json?:"")
             return userInfo
         }
