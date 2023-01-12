@@ -105,7 +105,7 @@ class DownloadWorker(private val ctx: Context, params: WorkerParameters) : Worke
 
     }
 
-    fun makeStatusNotification(message: String, context: Context) {
+    private fun makeStatusNotification(message: String, context: Context) {
 
         // Make a channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -135,7 +135,7 @@ class DownloadWorker(private val ctx: Context, params: WorkerParameters) : Worke
         // Show the notification
         NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
     }
-    fun makeIntentNotification(message: String,intent:PendingIntent, context: Context) {
+    private fun makeIntentNotification(message: String, intent:PendingIntent, context: Context) {
         // Make a channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because

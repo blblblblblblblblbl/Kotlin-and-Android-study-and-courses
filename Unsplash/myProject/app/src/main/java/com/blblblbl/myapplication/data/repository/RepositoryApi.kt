@@ -1,14 +1,17 @@
 package com.blblblbl.myapplication.data.repository
 
 import android.util.Log
+import com.blblblbl.myapplication.MyApp
 import com.blblblbl.myapplication.data.persistant_sorage.PersistantStorage
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.data.data_classes.search.SearchResult
+import com.blblblbl.myapplication.data.repository.utils.MockRequestInterceptor
 import com.example.example.PhotoCollection
 import com.example.example.UserInfo
 import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.DELETE
@@ -17,6 +20,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,6 +34,13 @@ class RepositoryApi @Inject constructor(
         private val gson = GsonBuilder().setLenient().create()
         private val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(
+                OkHttpClient.Builder()
+                    .connectTimeout(60L, TimeUnit.SECONDS)
+                    .readTimeout(60L, TimeUnit.SECONDS)
+                    .addInterceptor(MockRequestInterceptor(MyApp.appContext))
+                    .build()
+            )
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         val photosApi:PhotosApi = retrofit.create(
