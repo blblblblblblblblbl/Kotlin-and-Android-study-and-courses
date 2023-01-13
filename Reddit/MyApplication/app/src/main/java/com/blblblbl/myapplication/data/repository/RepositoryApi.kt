@@ -69,6 +69,10 @@ class RepositoryApi @Inject constructor(
             suspend fun getSavedPosts(@Path("username") username:String,@Header("Authorization") authHeader:String):SavedLinksResponse
             @GET("user/{username}/saved?type=comments")
             suspend fun getSavedComments(@Path("username") username:String,@Header("Authorization") authHeader:String): SavedCommentsResponse
+            @POST("api/save")
+            suspend fun saveThing(@Query("category") category: String, @Query("id") id:String, @Header("Authorization") authHeader:String)
+            @POST("api/unsave")
+            suspend fun unsaveThing(@Query("id") id:String, @Header("Authorization") authHeader:String)
         }
     }
     suspend fun getSubreddits(count: Int,limit: Int, where: String){
@@ -108,5 +112,13 @@ class RepositoryApi @Inject constructor(
     suspend fun getSavedComments(userName:String){
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog", "user response:" + RetrofitServices.savedThings.getSavedComments(userName,"bearer $token"))
+    }
+    suspend fun saveThing(category:String,id: String){
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
+        RetrofitServices.savedThings.saveThing(category = category,id = id,"bearer $token")
+    }
+    suspend fun unsaveThing(id: String){
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
+        RetrofitServices.savedThings.unsaveThing(id = id,"bearer $token")
     }
 }

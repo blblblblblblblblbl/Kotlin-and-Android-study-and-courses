@@ -70,6 +70,18 @@ class SubredditsFragment : Fragment() {
             Button(onClick = { viewModel.getSavedComments() }) {
                 Text(text = "SavedComments")
             }
+            Button(onClick = { viewModel.saveComment() }) {
+                Text(text = "saveComment")
+            }
+            Button(onClick = { viewModel.unsaveComment() }) {
+                Text(text = "unsaveComment")
+            }
+            Button(onClick = { viewModel.savePost() }) {
+                Text(text = "savePost")
+            }
+            Button(onClick = { viewModel.unsavePost() }) {
+                Text(text = "unsavePost")
+            }
 
         }
     }

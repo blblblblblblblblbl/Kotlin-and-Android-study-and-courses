@@ -62,4 +62,30 @@ class SubredditsFragmentViewModel @Inject constructor(
             repositoryApi.getSavedComments(userName)
         }
     }
+    fun saveComment(){
+        val id:String=""
+        val category:String = ""
+        viewModelScope.launch {
+            repositoryApi.saveThing(category,id)
+        }
+    }
+    fun unsaveComment(){
+        val id:String=""
+        viewModelScope.launch {
+            repositoryApi.unsaveThing(id)
+        }
+    }
+    fun savePost(){
+        val id:String=""
+        val category:String = ""
+        viewModelScope.launch {
+            repositoryApi.saveThing(category,id)
+        }
+    }
+    fun unsavePost(){
+        val id:String=""
+        viewModelScope.launch {
+            repositoryApi.unsaveThing(id)
+        }
+    }
 }
