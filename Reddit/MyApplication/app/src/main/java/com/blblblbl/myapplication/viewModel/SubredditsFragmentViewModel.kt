@@ -31,4 +31,9 @@ class SubredditsFragmentViewModel @Inject constructor(
             repositoryApi.userInfo("After_Solution1909")
         }
     }
+    fun getFriends(){
+        viewModelScope.launch {
+            repositoryApi.getFriends()
+        }
+    }
 }

@@ -43,6 +43,7 @@ import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Phot
 import com.blblblbl.myapplication.view.compose_utils.ErrorItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingView
+import com.blblblbl.myapplication.view.compose_utils.PhotoList
 import com.blblblbl.myapplication.viewModel.SearchFragmentViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -166,7 +167,6 @@ class SearchFragment : Fragment() {
                 colors = TextFieldDefaults.textFieldColors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    //backgroundColor = Color.Transparent,
                     cursorColor = Color.Black
                 )
             )

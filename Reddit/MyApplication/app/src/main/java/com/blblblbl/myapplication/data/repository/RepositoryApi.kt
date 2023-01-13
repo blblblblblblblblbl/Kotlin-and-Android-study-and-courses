@@ -1,6 +1,7 @@
 package com.blblblbl.myapplication.data.repository
 
 import android.util.Log
+import com.blblblbl.myapplication.data.data_classes.responses.friends.FriendsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.me.MeResponse
 import com.blblblbl.myapplication.data.data_classes.responses.subreddit.SubredditsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.user_info.UserInfoResponse
@@ -48,7 +49,7 @@ class RepositoryApi @Inject constructor(
             @GET("api/v1/me")
             suspend fun me(@Header("Authorization") authHeader:String): MeResponse
             @GET("/api/v1/me/friends")
-            suspend fun friendsList(@Header("Authorization") authHeader:String)
+            suspend fun friendsList(@Header("Authorization") authHeader:String):FriendsResponse
             
             @GET("user/{username}/about")
             suspend fun user(@Path("username") userName: String,@Header("Authorization") authHeader:String): UserInfoResponse
@@ -70,5 +71,9 @@ class RepositoryApi @Inject constructor(
     suspend fun userInfo(userName:String){
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog", "user response:" + RetrofitServices.userApi.user(userName,"bearer $token"))
+    }
+    suspend fun getFriends(){
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
+        Log.d("MyLog", "user response:" + RetrofitServices.userApi.friendsList("bearer $token"))
     }
 }
