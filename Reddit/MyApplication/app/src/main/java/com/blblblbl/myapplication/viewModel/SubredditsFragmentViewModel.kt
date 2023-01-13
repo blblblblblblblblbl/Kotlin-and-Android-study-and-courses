@@ -1,7 +1,9 @@
 package com.blblblbl.myapplication.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.repository.RepositoryApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -46,6 +48,18 @@ class SubredditsFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             val userName = "Quadaliacha"
             repositoryApi.addToFriends(userName)
+        }
+    }
+    fun getSavedPosts(){
+        val userName = "After_Solution1909"
+        viewModelScope.launch {
+            repositoryApi.getSavedPosts(userName)
+        }
+    }
+    fun getSavedComments(){
+        val userName = "After_Solution1909"
+        viewModelScope.launch {
+            repositoryApi.getSavedComments(userName)
         }
     }
 }

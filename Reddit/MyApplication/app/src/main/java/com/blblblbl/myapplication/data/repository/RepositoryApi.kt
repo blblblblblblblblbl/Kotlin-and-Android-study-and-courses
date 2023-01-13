@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.blblblbl.myapplication.data.data_classes.responses.friends.FriendsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.me.MeResponse
 import com.blblblbl.myapplication.data.data_classes.responses.posts.SubredditPostsResponse
+import com.blblblbl.myapplication.data.data_classes.responses.saved.comments.SavedCommentsResponse
+import com.blblblbl.myapplication.data.data_classes.responses.saved.link.SavedLinksResponse
 import com.blblblbl.myapplication.data.data_classes.responses.subreddit.SubredditsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.user_info.UserInfoResponse
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
@@ -37,7 +39,9 @@ class RepositoryApi @Inject constructor(
         val userApi:UserApi = retrofit.create(
             UserApi::class.java
         )
-
+        val savedThings: SavedThings = retrofit.create(
+            SavedThings::class.java
+        )
         interface AuthApi {
             @POST("api/v1/access_token")
             suspend fun exchangeCodeForToken()
@@ -59,6 +63,12 @@ class RepositoryApi @Inject constructor(
             suspend fun addToFriends(@Path("username") username:String,@Body requestBody: String,@Header("Authorization") authHeader:String)
             @GET("user/{username}/about")
             suspend fun user(@Path("username") userName: String,@Header("Authorization") authHeader:String): UserInfoResponse
+        }
+        interface SavedThings{
+            @GET("user/{username}/saved?type=links")
+            suspend fun getSavedPosts(@Path("username") username:String,@Header("Authorization") authHeader:String):SavedLinksResponse
+            @GET("user/{username}/saved?type=comments")
+            suspend fun getSavedComments(@Path("username") username:String,@Header("Authorization") authHeader:String): SavedCommentsResponse
         }
     }
     suspend fun getSubreddits(count: Int,limit: Int, where: String){
@@ -86,9 +96,17 @@ class RepositoryApi @Inject constructor(
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog", "user response:" + RetrofitServices.userApi.friendsList("bearer $token"))
     }
+
     suspend fun addToFriends(userName:String){
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         RetrofitServices.userApi.addToFriends(userName,"{\"name\": \"$userName\"}","bearer $token")
-
+    }
+    suspend fun getSavedPosts(userName:String){
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
+        Log.d("MyLog", "user response:" + RetrofitServices.savedThings.getSavedPosts(userName,"bearer $token"))
+    }
+    suspend fun getSavedComments(userName:String){
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
+        Log.d("MyLog", "user response:" + RetrofitServices.savedThings.getSavedComments(userName,"bearer $token"))
     }
 }
