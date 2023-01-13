@@ -58,6 +58,9 @@ class SubredditsFragment : Fragment() {
             Button(onClick = { viewModel.getFriends() }) {
                 Text(text = "friends")
             }
+            Button(onClick = { viewModel.addToFriends() }) {
+                Text(text = "addToFriends")
+            }
         }
     }
 

@@ -36,4 +36,10 @@ class SubredditsFragmentViewModel @Inject constructor(
             repositoryApi.getFriends()
         }
     }
+    fun addToFriends(){
+        viewModelScope.launch {
+            val userName = "Quadaliacha"
+            repositoryApi.addToFriends(userName)
+        }
+    }
 }
