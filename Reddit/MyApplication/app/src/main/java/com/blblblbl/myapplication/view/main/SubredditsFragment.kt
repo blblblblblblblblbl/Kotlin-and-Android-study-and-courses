@@ -46,6 +46,9 @@ class SubredditsFragment : Fragment() {
             Button(onClick = { viewModel.getSubreddits() }) {
                 Text(text = "get popular")
             }
+            Button(onClick = { viewModel.getSubredditPosts() }) {
+                Text(text = "getSubredditPosts")
+            }
             Button(onClick = { viewModel.searchSubreddits() }) {
                 Text(text = "search dog")
             }
@@ -61,6 +64,7 @@ class SubredditsFragment : Fragment() {
             Button(onClick = { viewModel.addToFriends() }) {
                 Text(text = "addToFriends")
             }
+
         }
     }
 

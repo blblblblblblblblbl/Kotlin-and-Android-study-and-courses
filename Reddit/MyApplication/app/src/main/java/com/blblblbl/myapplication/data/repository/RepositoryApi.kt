@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.blblblbl.myapplication.data.data_classes.responses.friends.FriendsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.me.MeResponse
+import com.blblblbl.myapplication.data.data_classes.responses.posts.SubredditPostsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.subreddit.SubredditsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.user_info.UserInfoResponse
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
@@ -44,6 +45,8 @@ class RepositoryApi @Inject constructor(
         interface SubredditsApi{
             @GET("subreddits/{where}")
             suspend fun getSubreddits(@Path("where") where:String, @Query("count") count:Int,@Query("limit") limit:Int, @Header("Authorization") authHeader:String):SubredditsResponse
+            @GET("r/{subreddit}")
+            suspend fun getSubredditPosts(@Path("subreddit") subreddit:String,@Header("Authorization") authHeader:String):SubredditPostsResponse
             @GET("/subreddits/search")
             suspend fun searchSubreddits(@Query("count") count:Int,@Query("limit") limit:Int,@Query("q") q:String, @Header("Authorization") authHeader:String):SubredditsResponse
         }
@@ -62,6 +65,10 @@ class RepositoryApi @Inject constructor(
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog","token from persistentStorage:$token")
         Log.d("MyLog","feed subreddits response:" + RetrofitServices.subredditsApi.getSubreddits(where,count, limit , "bearer $token"))
+    }
+    suspend fun getSubredditPosts(subreddit:String){
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
+        Log.d("MyLog","search response:" + RetrofitServices.subredditsApi.getSubredditPosts(subreddit, "bearer $token"))
     }
     suspend fun searchSubreddits(count: Int,limit: Int,search:String){
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)

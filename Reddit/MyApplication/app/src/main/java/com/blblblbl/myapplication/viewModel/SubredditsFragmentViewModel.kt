@@ -16,6 +16,12 @@ class SubredditsFragmentViewModel @Inject constructor(
             repositoryApi.getSubreddits(0,2,"new")
         }
     }
+    fun getSubredditPosts(){
+        viewModelScope.launch {
+            val subreddit = "Home"
+            repositoryApi.getSubredditPosts(subreddit)
+        }
+    }
     fun searchSubreddits(){
         viewModelScope.launch {
             repositoryApi.searchSubreddits(0,2,"dog")
