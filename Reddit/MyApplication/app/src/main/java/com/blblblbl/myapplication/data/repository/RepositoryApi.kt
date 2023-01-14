@@ -1,22 +1,19 @@
 package com.blblblbl.myapplication.data.repository
 
 import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.blblblbl.myapplication.data.data_classes.responses.friends.FriendsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.me.MeResponse
 import com.blblblbl.myapplication.data.data_classes.responses.posts.SubredditPostsResponse
-import com.blblblbl.myapplication.data.data_classes.responses.posts.comments.PostCommentsRespomse
+import com.blblblbl.myapplication.data.data_classes.responses.posts.comments.PostCommentsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.saved.comments.SavedCommentsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.saved.link.SavedLinksResponse
 import com.blblblbl.myapplication.data.data_classes.responses.subreddit.SubredditsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.user_info.UserInfoResponse
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.google.gson.GsonBuilder
-import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.create
 import retrofit2.http.*
 import javax.inject.Inject
 
@@ -53,7 +50,7 @@ class RepositoryApi @Inject constructor(
             @GET("r/{subreddit}")
             suspend fun getSubredditPosts(@Path("subreddit") subreddit:String,@Header("Authorization") authHeader:String):SubredditPostsResponse
             @GET("comments/{post}")
-            suspend fun getPostComments(@Path("post") post:String,@Query("limit") limit:Int, @Header("Authorization") authHeader:String):PostCommentsRespomse
+            suspend fun getPostComments(@Path("post") post:String,@Query("limit") limit:Int, @Header("Authorization") authHeader:String):List<PostCommentsResponse>
             @GET("/subreddits/search")
             suspend fun searchSubreddits(@Query("count") count:Int,@Query("limit") limit:Int,@Query("q") q:String, @Header("Authorization") authHeader:String):SubredditsResponse
         }

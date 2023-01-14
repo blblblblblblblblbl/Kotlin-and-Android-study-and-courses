@@ -48,7 +48,7 @@ data class PostCommentData (
     @SerializedName("is_created_from_ads_ui"        ) var isCreatedFromAdsUi         : Boolean?          = null,
     @SerializedName("author_premium"                ) var authorPremium              : Boolean?          = null,
     @SerializedName("thumbnail"                     ) var thumbnail                  : String?           = null,
-    @SerializedName("edited"                        ) var edited                     : Boolean?          = null,
+    //@SerializedName("edited"                        ) var edited                     : Boolean?          = null,
     @SerializedName("author_flair_css_class"        ) var authorFlairCssClass        : String?           = null,
     @SerializedName("author_flair_richtext"         ) var authorFlairRichtext        : ArrayList<String> = arrayListOf(),
     @SerializedName("gildings"                      ) var gildings                   : Gildings?         = Gildings(),
