@@ -3,11 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_main"
-    app:startDestination="@id/subredditsFragment">
+    app:startDestination="@id/testFragment">
 
     <fragment
         android:id="@+id/subredditsFragment"
         android:name="com.blblblbl.myapplication.view.main.SubredditsFragment"
         android:label="fragment_subreddits"
         tools:layout="@layout/fragment_subreddits" />
+    <fragment
+        android:id="@+id/testFragment"
+        android:name="com.blblblbl.myapplication.view.main.TestFragment"
+        android:label="fragment_test"
+        tools:layout="@layout/fragment_test" />
 </navigation>

@@ -1,16 +1,14 @@
 package com.blblblbl.myapplication.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.repository.RepositoryApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SubredditsFragmentViewModel @Inject constructor(
+class TestFragmentViewModel @Inject constructor(
     private val repositoryApi: RepositoryApi
 ):ViewModel() {
     fun getSubreddits(){
@@ -22,6 +20,12 @@ class SubredditsFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             val subreddit = "Home"
             repositoryApi.getSubredditPosts(subreddit)
+        }
+    }
+    fun getPostComments(){
+        val post:String="3g1jfi"
+        viewModelScope.launch {
+            repositoryApi.getPostComments(post)
         }
     }
     fun searchSubreddits(){
@@ -63,27 +67,27 @@ class SubredditsFragmentViewModel @Inject constructor(
         }
     }
     fun saveComment(){
-        val id:String=""
-        val category:String = ""
+        val id:String="ctu0ltr"
+        val category:String = "comment"
         viewModelScope.launch {
             repositoryApi.saveThing(category,id)
         }
     }
     fun unsaveComment(){
-        val id:String=""
+        val id:String="ctu0ltr"
         viewModelScope.launch {
             repositoryApi.unsaveThing(id)
         }
     }
     fun savePost(){
-        val id:String=""
-        val category:String = ""
+        val id:String="3g1jfi"
+        val category:String = "links"
         viewModelScope.launch {
             repositoryApi.saveThing(category,id)
         }
     }
     fun unsavePost(){
-        val id:String=""
+        val id:String="3g1jfi"
         viewModelScope.launch {
             repositoryApi.unsaveThing(id)
         }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.blblblbl.myapplication.data.data_classes.responses.friends.FriendsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.me.MeResponse
 import com.blblblbl.myapplication.data.data_classes.responses.posts.SubredditPostsResponse
+import com.blblblbl.myapplication.data.data_classes.responses.posts.comments.PostCommentsRespomse
 import com.blblblbl.myapplication.data.data_classes.responses.saved.comments.SavedCommentsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.saved.link.SavedLinksResponse
 import com.blblblbl.myapplication.data.data_classes.responses.subreddit.SubredditsResponse
@@ -51,8 +52,13 @@ class RepositoryApi @Inject constructor(
             suspend fun getSubreddits(@Path("where") where:String, @Query("count") count:Int,@Query("limit") limit:Int, @Header("Authorization") authHeader:String):SubredditsResponse
             @GET("r/{subreddit}")
             suspend fun getSubredditPosts(@Path("subreddit") subreddit:String,@Header("Authorization") authHeader:String):SubredditPostsResponse
+            @GET("comments/{post}")
+            suspend fun getPostComments(@Path("post") post:String,@Query("limit") limit:Int, @Header("Authorization") authHeader:String):PostCommentsRespomse
             @GET("/subreddits/search")
             suspend fun searchSubreddits(@Query("count") count:Int,@Query("limit") limit:Int,@Query("q") q:String, @Header("Authorization") authHeader:String):SubredditsResponse
+        }
+        interface PostsApi{
+
         }
         interface UserApi{
             @GET("api/v1/me")
@@ -83,6 +89,10 @@ class RepositoryApi @Inject constructor(
     suspend fun getSubredditPosts(subreddit:String){
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog","search response:" + RetrofitServices.subredditsApi.getSubredditPosts(subreddit, "bearer $token"))
+    }
+    suspend fun getPostComments(post:String){
+        val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
+        Log.d("MyLog","search response:" + RetrofitServices.subredditsApi.getPostComments(post, 5,"bearer $token"))
     }
     suspend fun searchSubreddits(count: Int,limit: Int,search:String){
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
