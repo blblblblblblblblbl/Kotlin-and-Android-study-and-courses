@@ -22,6 +22,16 @@ class TestFragmentViewModel @Inject constructor(
             repositoryApi.getSubredditPosts(subreddit)
         }
     }
+    fun getNewPosts(){
+        viewModelScope.launch {
+            repositoryApi.getNewPosts("")
+        }
+    }
+    fun getPopularPosts(){
+        viewModelScope.launch {
+            repositoryApi.getPopularPosts("")
+        }
+    }
     fun getPostComments(){
         val post:String="3g1jfi"
         viewModelScope.launch {
@@ -57,13 +67,13 @@ class TestFragmentViewModel @Inject constructor(
     fun getSavedPosts(){
         val userName = "After_Solution1909"
         viewModelScope.launch {
-            repositoryApi.getSavedPosts(userName)
+            repositoryApi.getSavedPosts(userName,"")
         }
     }
     fun getSavedComments(){
         val userName = "After_Solution1909"
         viewModelScope.launch {
-            repositoryApi.getSavedComments(userName)
+            repositoryApi.getSavedComments(userName,"")
         }
     }
     fun saveComment(){

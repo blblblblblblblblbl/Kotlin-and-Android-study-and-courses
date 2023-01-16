@@ -5,6 +5,6 @@ import com.google.gson.annotations.SerializedName
 
 data class Data (
 
-  @SerializedName("children" ) var children : ArrayList<Children> = arrayListOf()
+  @SerializedName("children" ) var friends : ArrayList<Friend> = arrayListOf()
 
 )

@@ -4,7 +4,7 @@ import com.blblblbl.myapplication.data.data_classes.responses.saved.links.LinkDa
 import com.google.gson.annotations.SerializedName
 
 
-data class Children (
+data class SavedLink (
 
   @SerializedName("kind" ) var kind : String? = null,
   @SerializedName("data" ) var linkData : LinkData?   = LinkData()

@@ -51,6 +51,12 @@ class TestFragment : Fragment() {
             Button(onClick = { viewModel.getSubredditPosts() }) {
                 Text(text = "getSubredditPosts")
             }
+            Button(onClick = { viewModel.getNewPosts() }) {
+                Text(text = "getNewPosts")
+            }
+            Button(onClick = { viewModel.getPopularPosts() }) {
+                Text(text = "getPopularPosts")
+            }
             Button(onClick = { viewModel.searchSubreddits() }) {
                 Text(text = "search dog")
             }

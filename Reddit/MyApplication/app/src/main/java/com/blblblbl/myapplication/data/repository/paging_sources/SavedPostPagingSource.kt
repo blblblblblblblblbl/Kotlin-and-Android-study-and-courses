@@ -1,0 +1,50 @@
+package com.blblblbl.myapplication.data.repository.paging_sources
+
+import android.util.Log
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
+import com.blblblbl.myapplication.data.data_classes.responses.saved.link.SavedLink
+import com.blblblbl.myapplication.data.repository.Repository
+import javax.inject.Inject
+
+class SavedPostPagingSource @Inject constructor(
+    private val repository: Repository
+): PagingSource<String, SavedLink>() {
+    lateinit var username:String
+    fun usernameInit(userName:String)
+    {
+        this.username = userName
+    }
+    override fun getRefreshKey(state: PagingState<String, SavedLink>): String?= FIRST_PAGE
+    override suspend fun load(params: LoadParams<String>): LoadResult<String, SavedLink> {
+        val page = params.key?: FIRST_PAGE
+        return kotlin.runCatching {
+            repository.getSavedPosts(username,page)
+        }.fold(
+            onSuccess = {
+                Log.d("MyLog",it.toString())
+                if (it.data?.children?.size==0){
+                    LoadResult.Page(
+                        data = listOf<SavedLink>(),
+                        prevKey = null,
+                        nextKey =  null
+                    )
+                }
+                else{
+                    it?.data?.children?.let { posts ->
+                        LoadResult.Page(
+                            data = posts,
+                            prevKey = null,
+                            nextKey =  it.data?.after?:""
+                        )
+                    }
+                }
+
+            },
+            onFailure = { LoadResult.Error(it) }
+        )!!
+    }
+    companion object{
+        private val FIRST_PAGE = ""
+    }
+}

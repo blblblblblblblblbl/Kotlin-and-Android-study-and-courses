@@ -3,7 +3,7 @@ package com.blblblbl.myapplication.data.data_classes.responses.friends
 import com.google.gson.annotations.SerializedName
 
 
-data class Children (
+data class Friend (
 
   @SerializedName("date"   ) var date  : Int?    = null,
   @SerializedName("rel_id" ) var relId : String? = null,

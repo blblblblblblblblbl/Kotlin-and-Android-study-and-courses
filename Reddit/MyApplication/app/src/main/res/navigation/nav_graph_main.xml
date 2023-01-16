@@ -3,16 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_main"
-    app:startDestination="@id/testFragment">
+    app:startDestination="@id/subredditsFragment">
 
     <fragment
         android:id="@+id/subredditsFragment"
         android:name="com.blblblbl.myapplication.view.main.SubredditsFragment"
         android:label="fragment_subreddits"
-        tools:layout="@layout/fragment_subreddits" />
+        tools:layout="@layout/fragment_subreddits" >
+        <action
+            android:id="@+id/action_subredditsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
     <fragment
         android:id="@+id/testFragment"
         android:name="com.blblblbl.myapplication.view.main.TestFragment"
         android:label="fragment_test"
         tools:layout="@layout/fragment_test" />
+    <fragment
+        android:id="@+id/favouritesFragment"
+        android:name="com.blblblbl.myapplication.view.main.FavouritesFragment"
+        android:label="fragment_favourites"
+        tools:layout="@layout/fragment_favourites" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.blblblbl.myapplication.view.main.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="com.blblblbl.myapplication.view.main.MyProfileFragment"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" />
 </navigation>

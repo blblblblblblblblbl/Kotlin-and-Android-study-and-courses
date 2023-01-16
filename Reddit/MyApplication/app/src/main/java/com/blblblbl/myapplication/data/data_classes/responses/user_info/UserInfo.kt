@@ -15,7 +15,7 @@ data class UserInfo (
   @SerializedName("subreddit"                 ) var subreddit               : Subreddit? = Subreddit(),
   @SerializedName("pref_show_presence"        ) var prefShowPresence        : Boolean?   = null,
   @SerializedName("snoovatar_img"             ) var snoovatarImg            : String?    = null,
-  @SerializedName("snoovatar_size"            ) var snoovatarSize           : String?    = null,
+  //@SerializedName("snoovatar_size"            ) var snoovatarSize           : String?    = null,
   @SerializedName("gold_expiration"           ) var goldExpiration          : String?    = null,
   @SerializedName("has_gold_subscription"     ) var hasGoldSubscription     : Boolean?   = null,
   @SerializedName("is_sponsor"                ) var isSponsor               : Boolean?   = null,
