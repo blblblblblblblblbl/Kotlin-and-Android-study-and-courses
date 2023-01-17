@@ -52,7 +52,7 @@ data class PostData (
     @SerializedName("author_flair_css_class"        ) var authorFlairCssClass        : String?           = null,
     //@SerializedName("author_flair_richtext"         ) var authorFlairRichtext        : ArrayList<String> = arrayListOf(),
     @SerializedName("gildings"                      ) var gildings                   : Gildings?         = Gildings(),
-    @SerializedName("content_categories"            ) var contentCategories          : String?           = null,
+    //@SerializedName("content_categories"            ) var contentCategories          : String?           = null,
     @SerializedName("is_self"                       ) var isSelf                     : Boolean?          = null,
     @SerializedName("mod_note"                      ) var modNote                    : String?           = null,
     @SerializedName("created"                       ) var created                    : Int?              = null,

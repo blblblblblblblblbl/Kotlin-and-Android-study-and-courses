@@ -32,6 +32,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.data.data_classes.responses.posts.Post
+import com.blblblbl.myapplication.data.data_classes.responses.saved.comments.SavedComment
 import com.blblblbl.myapplication.data.data_classes.responses.saved.link.SavedLink
 import com.blblblbl.myapplication.viewModel.FavouritesFragmentViewModel
 import com.skydoves.landscapist.glide.GlideImage
@@ -77,7 +78,9 @@ class FavouritesFragment : Fragment() {
                                     Log.d("MyLog","saved posts")
                                     PostsList(posts = viewModel.pagedPosts)
                                 }
-                                else {}
+                                else {
+                                    CommentsList(comments = viewModel.pagedComments)
+                                }
 
                             }
                         }
@@ -126,7 +129,6 @@ class FavouritesFragment : Fragment() {
             }
         }
     }
-
     @Composable
     fun PostScreen(post: SavedLink) {
         val textSizeCommon = 20.sp
@@ -169,6 +171,42 @@ class FavouritesFragment : Fragment() {
             }
         }
     }
+    @Composable
+    fun CommentsList(comments: StateFlow<Flow<PagingData<SavedComment>>?>){
+        val commentsState = comments.collectAsState().value
+        commentsState?.let { commentsState->
+            val lazyPostItems: LazyPagingItems<SavedComment> = commentsState.collectAsLazyPagingItems()
+            LazyColumn{
+                items(lazyPostItems){item->
+                    item?.let {
+                        CommentScreen(comment = it)
+                    }
+                }
+            }
+        }
+    }
+    @Composable
+    fun CommentScreen(comment: SavedComment) {
+        val textSizeCommon = 20.sp
+        Card(modifier = Modifier
+            .fillMaxWidth()
+            .padding(2.dp)) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)) {
+                Row(modifier = Modifier) {
+                    comment?.commentData?.body?.let {body->
+                        Text(text = body, fontSize = textSizeCommon,modifier = Modifier.weight(1f))
+                    }
 
+                }
+                Row() {
+                    comment?.commentData?.author?.let { author->
+                        Text(text = author, fontSize = textSizeCommon,modifier = Modifier.weight(1f))
+                    }
+                }
+            }
+        }
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.blblblbl.myapplication.data.repository
 
+import android.util.Log
 import com.blblblbl.myapplication.data.data_classes.responses.friends.FriendsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.me.MeResponse
 import com.blblblbl.myapplication.data.data_classes.responses.posts.SubredditPostsResponse
@@ -16,6 +17,7 @@ class Repository @Inject constructor(
         return repositoryApi.getNewPosts(page)
     }
     suspend fun getPopularPosts(page:String):SubredditPostsResponse{
+        Log.d("MyLog","Repository getPopularPosts")
         return repositoryApi.getPopularPosts(page)
     }
     suspend fun meInfo():MeResponse{
@@ -25,6 +27,7 @@ class Repository @Inject constructor(
         return repositoryApi.getFriends()
     }
     suspend fun getSavedPosts(userName:String,page:String): SavedLinksResponse {
+        Log.d("SavedPosts","page:$page")
         return repositoryApi.getSavedPosts(userName,page)
     }
     suspend fun getSavedComments(userName:String,page:String): SavedCommentsResponse {

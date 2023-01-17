@@ -48,7 +48,6 @@ class SubredditsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel
         viewModel.loadNew()
         return ComposeView(requireContext()).apply {
             setContent {

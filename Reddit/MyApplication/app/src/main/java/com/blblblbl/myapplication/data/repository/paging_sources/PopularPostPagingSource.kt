@@ -14,6 +14,7 @@ class PopularPostPagingSource@Inject constructor(
     override suspend fun load(params: LoadParams<String>): LoadResult<String, Post> {
         val page = params.key?: FIRST_PAGE
         return kotlin.runCatching {
+            Log.d("MyLog","getPopularPosts(page)")
             repository.getPopularPosts(page)
         }.fold(
             onSuccess = {

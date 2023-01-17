@@ -23,12 +23,14 @@ class SavedPostPagingSource @Inject constructor(
         }.fold(
             onSuccess = {
                 Log.d("MyLog",it.toString())
-                if (it.data?.children?.size==0){
-                    LoadResult.Page(
-                        data = listOf<SavedLink>(),
-                        prevKey = null,
-                        nextKey =  null
-                    )
+                if (it.data?.children?.size!!<PAGE_SIZE){
+                    it?.data?.children?.let { posts ->
+                        LoadResult.Page(
+                            data = posts,
+                            prevKey = null,
+                            nextKey =  null
+                        )
+                    }
                 }
                 else{
                     it?.data?.children?.let { posts ->
@@ -46,5 +48,6 @@ class SavedPostPagingSource @Inject constructor(
     }
     companion object{
         private val FIRST_PAGE = ""
+        const val PAGE_SIZE = 10
     }
 }

@@ -96,13 +96,14 @@ class RepositoryApi @Inject constructor(
     suspend fun getNewPosts(page:String):SubredditPostsResponse{
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         val response = RetrofitServices.postsApi.getNewPosts(page,"bearer $token")
-        Log.d("MyLog","search response:" + response)
+        Log.d("MyLog","getNewPosts response:" + response)
         return response
     }
     suspend fun getPopularPosts(page:String):SubredditPostsResponse{
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
+        Log.d("MyLog","RepositoryApi getPopularPosts")
         val response = RetrofitServices.postsApi.getPopularPosts(page,"bearer $token")
-        Log.d("MyLog","search response:" + response)
+        Log.d("MyLog", "getPopularPosts response:$response")
         return response
     }
     suspend fun getPostComments(post:String){

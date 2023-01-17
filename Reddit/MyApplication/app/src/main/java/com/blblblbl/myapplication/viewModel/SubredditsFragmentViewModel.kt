@@ -1,6 +1,7 @@
 package com.blblblbl.myapplication.viewModel
 
 import android.graphics.pdf.PdfDocument.Page
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -30,12 +31,13 @@ class SubredditsFragmentViewModel @Inject constructor(
         _pagedPosts.value = Pager(
             config = PagingConfig(pageSize = 15),
             pagingSourceFactory = {newPostPagingSource}
-        ).flow//.cachedIn(viewModelScope)
+        ).flow.cachedIn(viewModelScope)
     }
     fun loadPopular(){
+        Log.d("MyLog", "loadPopular")
         _pagedPosts.value = Pager(
             config = PagingConfig(pageSize = 15),
             pagingSourceFactory = {popularPostPagingSource}
-        ).flow//.cachedIn(viewModelScope)
+        ).flow.cachedIn(viewModelScope)
     }
 }

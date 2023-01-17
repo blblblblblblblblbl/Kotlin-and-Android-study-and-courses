@@ -23,12 +23,14 @@ class SavedCommentPagingSource@Inject constructor(
         }.fold(
             onSuccess = {
                 Log.d("MyLog",it.toString())
-                if (it.data?.children?.size==0){
-                    LoadResult.Page(
-                        data = listOf<SavedComment>(),
-                        prevKey = null,
-                        nextKey =  null
-                    )
+                if (it.data?.children?.size!!< PAGE_SIZE){
+                    it?.data?.children?.let { comments ->
+                        LoadResult.Page(
+                            data = comments,
+                            prevKey = null,
+                            nextKey =  null
+                        )
+                    }
                 }
                 else{
                     it?.data?.children?.let { posts ->
@@ -46,5 +48,6 @@ class SavedCommentPagingSource@Inject constructor(
     }
     companion object{
         private val FIRST_PAGE = ""
+        const val PAGE_SIZE = 10
     }
 }
