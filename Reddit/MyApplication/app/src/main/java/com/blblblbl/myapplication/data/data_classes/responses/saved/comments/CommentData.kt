@@ -1,5 +1,6 @@
 package com.blblblbl.myapplication.data.data_classes.responses.saved.comments
 
+import com.blblblbl.myapplication.data.data_classes.responses.posts.comments.CommentsResponse
 import com.google.gson.annotations.SerializedName
 
 data class CommentData (
@@ -17,7 +18,7 @@ data class CommentData (
     @SerializedName("subreddit"                       ) var subreddit                    : String?           = null,
     @SerializedName("link_author"                     ) var linkAuthor                   : String?           = null,
     @SerializedName("likes"                           ) var likes                        : String?           = null,
-    @SerializedName("replies"                         ) var replies                      : String?           = null,
+    @SerializedName("replies"                         ) var replies                      : CommentsResponse?           = null,
     @SerializedName("user_reports"                    ) var userReports                  : ArrayList<String> = arrayListOf(),
     @SerializedName("saved"                           ) var saved                        : Boolean?          = null,
     @SerializedName("id"                              ) var id                           : String?           = null,

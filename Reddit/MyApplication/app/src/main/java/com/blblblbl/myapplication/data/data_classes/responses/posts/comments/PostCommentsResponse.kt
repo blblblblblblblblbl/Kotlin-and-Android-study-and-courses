@@ -1,11 +1,9 @@
 package com.blblblbl.myapplication.data.data_classes.responses.posts.comments
 
+import com.blblblbl.myapplication.data.data_classes.responses.posts.SubredditPostsResponse
 import com.google.gson.annotations.SerializedName
 
-
-data class PostCommentsResponse (
-
-  @SerializedName("kind" ) var kind : String? = null,
-  @SerializedName("data" ) var data : Data?   = Data()
-
+class PostCommentsResponse(
+    val subredditPostsResponse: SubredditPostsResponse,
+    val commentsResponse: CommentsResponse
 )

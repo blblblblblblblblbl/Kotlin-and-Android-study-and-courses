@@ -5,6 +5,7 @@ import com.blblblbl.myapplication.data.data_classes.responses.friends.FriendsRes
 import com.blblblbl.myapplication.data.data_classes.responses.me.MeResponse
 import com.blblblbl.myapplication.data.data_classes.responses.posts.SubredditPostsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.posts.comments.PostCommentsResponse
+import com.blblblbl.myapplication.data.data_classes.responses.posts.comments.utils.PostCommentsResponseDeserializer
 import com.blblblbl.myapplication.data.data_classes.responses.saved.comments.SavedCommentsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.saved.link.SavedLinksResponse
 import com.blblblbl.myapplication.data.data_classes.responses.subreddit.SubredditsResponse
@@ -16,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.*
 import javax.inject.Inject
+
 
 class RepositoryApi @Inject constructor(
     private val persistentStorage: PersistentStorage
@@ -53,7 +55,7 @@ class RepositoryApi @Inject constructor(
             @GET("r/{subreddit}")
             suspend fun getSubredditPosts(@Path("subreddit") subreddit:String,@Header("Authorization") authHeader:String):SubredditPostsResponse
             @GET("comments/{post}")
-            suspend fun getPostComments(@Path("post") post:String,@Query("limit") limit:Int, @Header("Authorization") authHeader:String):List<PostCommentsResponse>
+            suspend fun getPostComments(@Path("post") post:String,@Query("limit") limit:Int, @Header("Authorization") authHeader:String):String
             @GET("/subreddits/search")
             suspend fun searchSubreddits(@Query("count") count:Int,@Query("limit") limit:Int,@Query("q") q:String, @Header("Authorization") authHeader:String):SubredditsResponse
         }
@@ -77,7 +79,7 @@ class RepositoryApi @Inject constructor(
             @GET("user/{username}/saved?type=links")
             suspend fun getSavedPosts(@Path("username") username:String,@Query("after")page:String,@Header("Authorization") authHeader:String):SavedLinksResponse
             @GET("user/{username}/saved?type=comments")
-            suspend fun getSavedComments(@Path("username") username:String,@Query("after")page:String,@Header("Authorization") authHeader:String): SavedCommentsResponse
+            suspend fun getSavedComments(@Path("username") username:String,@Query("after")page:String,@Header("Authorization") authHeader:String): String
             @POST("api/save")
             suspend fun saveThing(@Query("category") category: String, @Query("id") id:String, @Header("Authorization") authHeader:String)
             @POST("api/unsave")
@@ -106,9 +108,15 @@ class RepositoryApi @Inject constructor(
         Log.d("MyLog", "getPopularPosts response:$response")
         return response
     }
-    suspend fun getPostComments(post:String){
+    suspend fun getPostComments(post:String):PostCommentsResponse{
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
-        Log.d("MyLog","search response:" + RetrofitServices.subredditsApi.getPostComments(post, 5,"bearer $token"))
+        val response = RetrofitServices.subredditsApi.getPostComments(post, 5,"bearer $token")
+        val gsonBuilder = GsonBuilder()
+        gsonBuilder.registerTypeAdapter(PostCommentsResponse::class.java, PostCommentsResponseDeserializer())
+        val gson = gsonBuilder.create()
+        val classResponse = gson.fromJson(response, PostCommentsResponse::class.java)
+        Log.d("MyLog","search response:" + response)
+        return classResponse
     }
     suspend fun searchSubreddits(count: Int,limit: Int,search:String){
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
@@ -144,8 +152,10 @@ class RepositoryApi @Inject constructor(
     suspend fun getSavedComments(userName:String,page:String):SavedCommentsResponse{
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         val response = RetrofitServices.savedThings.getSavedComments(userName,page,"bearer $token")
+        val gson = GsonBuilder().setLenient().create()
+        val correctResponse = response.replace("\"replies\": \"\"","\"replies\": null")
         Log.d("MyLog", "user response:" + response)
-        return response
+        return gson.fromJson(correctResponse,SavedCommentsResponse::class.java)
     }
     suspend fun saveThing(category:String,id: String){
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)

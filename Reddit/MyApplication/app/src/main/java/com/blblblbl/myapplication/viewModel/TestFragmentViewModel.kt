@@ -1,5 +1,6 @@
 package com.blblblbl.myapplication.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.blblblbl.myapplication.data.repository.RepositoryApi
@@ -35,7 +36,8 @@ class TestFragmentViewModel @Inject constructor(
     fun getPostComments(){
         val post:String="3g1jfi"
         viewModelScope.launch {
-            repositoryApi.getPostComments(post)
+            val response = repositoryApi.getPostComments(post)
+            Log.d("MyLog",response.toString())
         }
     }
     fun searchSubreddits(){
