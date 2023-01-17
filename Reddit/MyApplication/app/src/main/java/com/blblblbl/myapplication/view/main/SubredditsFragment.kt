@@ -56,14 +56,16 @@ class SubredditsFragment : Fragment() {
                     topBar = {
                         SearchTopBar(
                             onSearchClicked = {
-                                findNavController().navigate(
+                                /*findNavController().navigate(
                                     R.id.action_subredditsFragment_to_searchFragment
-                                )
+                                )*/
                             }
                         )
                     },
                     content = {
-                        Surface(modifier = Modifier.padding(top = it.calculateTopPadding()).fillMaxWidth()) {
+                        Surface(modifier = Modifier
+                            .padding(top = it.calculateTopPadding())
+                            .fillMaxWidth()) {
                             Column(horizontalAlignment = CenterHorizontally) {
                                 Row() {
                                     Text(text = "new")
@@ -73,12 +75,6 @@ class SubredditsFragment : Fragment() {
                                         else viewModel.loadNew()
                                     })
                                     Text(text = "popular")
-                                    /*Button(onClick = { viewModel.loadNew() }) {
-                                        Text(text = "new")
-                                    }
-                                    Button(onClick = { viewModel.loadPopular() } ) {
-                                        Text(text = "popular")
-                                    }*/
                                 }
                                 PostsList(posts = viewModel.pagedPosts)
                             }
@@ -96,7 +92,7 @@ class SubredditsFragment : Fragment() {
         TopAppBar(
             title = {
                 Text(
-                    text = "search photo",
+                    text = "search posts",
                     color = Color.White
                 )
             },
