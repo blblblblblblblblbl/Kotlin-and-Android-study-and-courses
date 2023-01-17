@@ -114,7 +114,8 @@ class RepositoryApi @Inject constructor(
         val gsonBuilder = GsonBuilder()
         gsonBuilder.registerTypeAdapter(PostCommentsResponse::class.java, PostCommentsResponseDeserializer())
         val gson = gsonBuilder.create()
-        val classResponse = gson.fromJson(response, PostCommentsResponse::class.java)
+        val correctResponse = response.replace("\"replies\": \"\"","\"replies\": null")
+        val classResponse = gson.fromJson(correctResponse, PostCommentsResponse::class.java)
         Log.d("MyLog","search response:" + response)
         return classResponse
     }
@@ -128,9 +129,11 @@ class RepositoryApi @Inject constructor(
         Log.d("MyLog", "me response:" + response)
         return response
     }
-    suspend fun userInfo(userName:String){
+    suspend fun userInfo(userName:String):UserInfoResponse{
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
-        Log.d("MyLog", "user response:" + RetrofitServices.userApi.user(userName,"bearer $token"))
+        val response = RetrofitServices.userApi.user(userName,"bearer $token")
+        Log.d("MyLog", "user response:" + response)
+        return response
     }
     suspend fun getFriends():FriendsResponse{
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)

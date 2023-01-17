@@ -17,7 +17,7 @@ internal class PostCommentsResponseDeserializer : JsonDeserializer<PostCommentsR
         val gson = Gson()
         val jsonArray = json.asJsonArray
         val post = gson.fromJson(jsonArray[0],SubredditPostsResponse::class.java)
-        val commentsResponse = gson.fromJson(jsonArray[0],CommentsResponse::class.java)
+        val commentsResponse = gson.fromJson(jsonArray[1],CommentsResponse::class.java)
         return PostCommentsResponse(post, commentsResponse)
     }
 }

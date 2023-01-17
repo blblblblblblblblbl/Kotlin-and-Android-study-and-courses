@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_subredditsFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_subredditsFragment_to_detailedPostFragment"
+            app:destination="@id/detailedPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/testFragment"
@@ -34,4 +37,18 @@
         android:name="com.blblblbl.myapplication.view.main.MyProfileFragment"
         android:label="fragment_my_profile"
         tools:layout="@layout/fragment_my_profile" />
+    <fragment
+        android:id="@+id/detailedPostFragment"
+        android:name="com.blblblbl.myapplication.view.main.DetailedPostFragment"
+        android:label="fragment_detailed_post"
+        tools:layout="@layout/fragment_detailed_post" >
+        <action
+            android:id="@+id/action_detailedPostFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.blblblbl.myapplication.view.main.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" />
 </navigation>

@@ -4,8 +4,10 @@ import android.util.Log
 import com.blblblbl.myapplication.data.data_classes.responses.friends.FriendsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.me.MeResponse
 import com.blblblbl.myapplication.data.data_classes.responses.posts.SubredditPostsResponse
+import com.blblblbl.myapplication.data.data_classes.responses.posts.comments.PostCommentsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.saved.comments.SavedCommentsResponse
 import com.blblblbl.myapplication.data.data_classes.responses.saved.link.SavedLinksResponse
+import com.blblblbl.myapplication.data.data_classes.responses.user_info.UserInfoResponse
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import javax.inject.Inject
 
@@ -32,5 +34,11 @@ class Repository @Inject constructor(
     }
     suspend fun getSavedComments(userName:String,page:String): SavedCommentsResponse {
         return repositoryApi.getSavedComments(userName,page)
+    }
+    suspend fun getPostComments(post:String): PostCommentsResponse {
+        return repositoryApi.getPostComments(post)
+    }
+    suspend fun userInfo(userName:String):UserInfoResponse{
+        return repositoryApi.userInfo(userName)
     }
 }

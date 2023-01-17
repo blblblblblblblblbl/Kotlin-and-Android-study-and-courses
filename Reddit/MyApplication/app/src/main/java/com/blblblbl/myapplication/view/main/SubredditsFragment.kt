@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -15,17 +16,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.DarkGray
-import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
@@ -130,7 +129,15 @@ class SubredditsFragment : Fragment() {
         val textSizeCommon = 20.sp
         Card(modifier = Modifier
             .fillMaxWidth()
-            .padding(2.dp)) {
+            .padding(2.dp)
+            .clickable {
+                val bundle = bundleOf()
+                bundle.putString(DetailedPostFragment.POST_ID_KEY, post.data?.id!!)
+                findNavController().navigate(
+                    R.id.action_subredditsFragment_to_detailedPostFragment,
+                    bundle
+                )
+            }) {
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)) {
@@ -154,7 +161,10 @@ class SubredditsFragment : Fragment() {
                 }
                 Row() {
                     post?.data?.author?.let { author->
-                        Text(text = author, fontSize = textSizeCommon,modifier = Modifier.weight(1f))
+                        TextButton(onClick = { /*TODO*/ }) {
+                            Text(text = author, fontSize = textSizeCommon)
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
                     }
                     post?.data?.numComments?.let { numComments->
                         Text(text = numComments.toString(), fontSize = textSizeCommon)

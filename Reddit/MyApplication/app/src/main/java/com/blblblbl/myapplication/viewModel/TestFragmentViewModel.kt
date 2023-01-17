@@ -34,10 +34,10 @@ class TestFragmentViewModel @Inject constructor(
         }
     }
     fun getPostComments(){
-        val post:String="3g1jfi"
+        val post:String="10ee5sb"
         viewModelScope.launch {
             val response = repositoryApi.getPostComments(post)
-            Log.d("MyLog",response.toString())
+            Log.d("MyLog",response.commentsResponse.toString())
         }
     }
     fun searchSubreddits(){
