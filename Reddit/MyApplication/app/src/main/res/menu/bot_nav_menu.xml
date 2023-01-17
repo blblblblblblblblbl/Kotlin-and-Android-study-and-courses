@@ -15,7 +15,7 @@
         android:title=""
         android:icon="@drawable/ic_baseline_account_box_24"
         />
-    <item
+    <!--<item
         android:id="@+id/testFragment"
-        android:title="test"/>
+        android:title="test"/>-->
 </menu>

@@ -16,4 +16,9 @@
     <string name="isGold">gold</string>
     <string name="clear_saved">clear saved</string>
     <string name="comments_number">comments_number</string>
+    <string name="onboarding">onboarding</string>
+    <string name="onboarding1">scroll post</string>
+    <string name="onboarding2">look at comments</string>
+    <string name="onboarding3">make friends</string>
+    <string name="onboarding4">save posts</string>
 </resources>
