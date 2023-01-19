@@ -18,7 +18,7 @@ This android application works with unspash api
 - search photos
 - like photos
 - view detailed photo info
-- download photo, it will be downloaed later in background if you don't have connection now
+- download photo, it will be downloaded later in background if you don't have connection now
 - open photo in external apps
 - view photo collections
 - open location in external apps
