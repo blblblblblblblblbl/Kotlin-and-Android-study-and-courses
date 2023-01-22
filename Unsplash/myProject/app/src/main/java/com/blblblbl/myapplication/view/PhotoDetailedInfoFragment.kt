@@ -188,19 +188,6 @@ class PhotoDetailedInfoFragment : Fragment() {
                             Icon(painter = painterResource(id = R.drawable.ic_outline_location_on_24), contentDescription = "location icon", tint = Color.Black,
                                 )
                         }
-                        /*Icon(painter = painterResource(id = R.drawable.ic_outline_location_on_24), contentDescription = "location icon", tint = Color.Black,
-                            modifier = Modifier.clickable {
-                                val latitude = location.position?.latitude
-                                val longitude  = location.position?.longitude
-                                Log.d("MyLog","geo:${location.position}")
-                                if (latitude!=null &&longitude!=null){
-                                    val intent = Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse("geo:$latitude,$longitude")
-                                    )
-                                    startActivity(intent)
-                                }
-                            })*/
                         Text(text = "${location.city?:""} ${location.country?:""}", color = textColor, fontSize = textSizeCommon)
                     }
                 }
@@ -213,7 +200,6 @@ class PhotoDetailedInfoFragment : Fragment() {
             if (hashTags!="") Text(text = hashTags, color = textColor, fontSize = textSizeCommon, modifier = Modifier.padding(20.dp))
             detailedPhotoInfo.exif?.let {exif->
                 Row() {
-                    //val exif = detailedPhotoInfo.exif
                     Column() {
                         exif.make?.let { make-> Text(text = "${stringResource(id = R.string.made_with_camera)}: ${make}",color = textColor, fontSize = textSizeCommon) }
                         exif.model?.let {model->Text(text = "${stringResource(id = R.string.camera_Model)}: ${model}",color = textColor, fontSize = textSizeCommon)}
@@ -238,10 +224,6 @@ class PhotoDetailedInfoFragment : Fragment() {
                 IconButton(onClick = { launcher.launch(REQUEST_PERMISSIONS)}) {
                     Icon(painter = painterResource(id = R.drawable.ic_baseline_download_24), contentDescription = "download icon", tint = Color.Black)
                 }
-                /*Icon(painter = painterResource(id = R.drawable.ic_baseline_download_24), contentDescription = "download icon", tint = Color.Black,
-                    modifier = Modifier.clickable {
-                        launcher.launch(REQUEST_PERMISSIONS)
-                    })*/
                 IconButton(onClick = {
                     ShareCompat.IntentBuilder(requireContext())
                         .setType("text/plain")
@@ -251,13 +233,6 @@ class PhotoDetailedInfoFragment : Fragment() {
                 }) {
                     Icon(painter = painterResource(id = R.drawable.ic_baseline_share_24), contentDescription = "share icon", tint = Color.Black)
                 }
-                /*Icon(painter = painterResource(id = R.drawable.ic_baseline_share_24), contentDescription = "share icon", tint = Color.Black,
-                    modifier = Modifier.clickable {
-                        ShareCompat.IntentBuilder(requireContext())
-                            .setType("text/plain")
-                            .setChooserTitle("Share URL")
-                            .setText("https://unsplash.com/photos/${detailedPhotoInfo.id}")
-                            .startChooser(); })*/
             }
 
         }
