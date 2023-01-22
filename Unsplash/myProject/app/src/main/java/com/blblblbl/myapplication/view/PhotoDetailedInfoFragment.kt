@@ -173,7 +173,22 @@ class PhotoDetailedInfoFragment : Fragment() {
             detailedPhotoInfo.location?.let { location->
                 if (location.city!=null||location.country!=null||(location.position!=null&&location.position?.latitude!=null&&location.position?.longitude!=null)){
                     Row() {
-                        Icon(painter = painterResource(id = R.drawable.ic_outline_location_on_24), contentDescription = "location icon", tint = Color.Black,
+                        IconButton(onClick = {
+                            val latitude = location.position?.latitude
+                            val longitude  = location.position?.longitude
+                            Log.d("MyLog","geo:${location.position}")
+                            if (latitude!=null &&longitude!=null){
+                                val intent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("geo:$latitude,$longitude")
+                                )
+                                startActivity(intent)
+                            }
+                        }) {
+                            Icon(painter = painterResource(id = R.drawable.ic_outline_location_on_24), contentDescription = "location icon", tint = Color.Black,
+                                )
+                        }
+                        /*Icon(painter = painterResource(id = R.drawable.ic_outline_location_on_24), contentDescription = "location icon", tint = Color.Black,
                             modifier = Modifier.clickable {
                                 val latitude = location.position?.latitude
                                 val longitude  = location.position?.longitude
@@ -185,7 +200,7 @@ class PhotoDetailedInfoFragment : Fragment() {
                                     )
                                     startActivity(intent)
                                 }
-                            })
+                            })*/
                         Text(text = "${location.city?:""} ${location.country?:""}", color = textColor, fontSize = textSizeCommon)
                     }
                 }
@@ -220,17 +235,29 @@ class PhotoDetailedInfoFragment : Fragment() {
 
             Row(modifier = Modifier.align(End)) {
                 Text(text = "${stringResource(id = R.string.download)} (${detailedPhotoInfo.downloads})",color = textColor, fontSize = textSizeCommon)
-                Icon(painter = painterResource(id = R.drawable.ic_baseline_download_24), contentDescription = "download icon", tint = Color.Black,
+                IconButton(onClick = { launcher.launch(REQUEST_PERMISSIONS)}) {
+                    Icon(painter = painterResource(id = R.drawable.ic_baseline_download_24), contentDescription = "download icon", tint = Color.Black)
+                }
+                /*Icon(painter = painterResource(id = R.drawable.ic_baseline_download_24), contentDescription = "download icon", tint = Color.Black,
                     modifier = Modifier.clickable {
                         launcher.launch(REQUEST_PERMISSIONS)
-                    })
-                Icon(painter = painterResource(id = R.drawable.ic_baseline_share_24), contentDescription = "share icon", tint = Color.Black,
+                    })*/
+                IconButton(onClick = {
+                    ShareCompat.IntentBuilder(requireContext())
+                        .setType("text/plain")
+                        .setChooserTitle("Share URL")
+                        .setText("https://unsplash.com/photos/${detailedPhotoInfo.id}")
+                        .startChooser()
+                }) {
+                    Icon(painter = painterResource(id = R.drawable.ic_baseline_share_24), contentDescription = "share icon", tint = Color.Black)
+                }
+                /*Icon(painter = painterResource(id = R.drawable.ic_baseline_share_24), contentDescription = "share icon", tint = Color.Black,
                     modifier = Modifier.clickable {
                         ShareCompat.IntentBuilder(requireContext())
                             .setType("text/plain")
                             .setChooserTitle("Share URL")
                             .setText("https://unsplash.com/photos/${detailedPhotoInfo.id}")
-                            .startChooser(); })
+                            .startChooser(); })*/
             }
 
         }
