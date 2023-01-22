@@ -56,7 +56,6 @@ class CollectionPhotoListFragment : Fragment() {
         viewModel.getCollectionPhotos(collectionId.toString())
         return ComposeView(requireContext()).apply {
             setContent {
-                //PhotoList(photos = viewModel.pagedPhotos, photoScreen =  PhotoScreen)
                 UnsplashTheme() {
                     PhotoList(photos = viewModel.pagedPhotos)
                 }

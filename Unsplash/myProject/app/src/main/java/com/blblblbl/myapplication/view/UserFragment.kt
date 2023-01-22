@@ -68,7 +68,6 @@ class UserFragment : Fragment() {
                             UserTopBar(onLogOutClicked = { openDialog.value = true })
                         }
                     ) {
-                        val antiWarning = it
                         if (openDialog.value) {
                             AlertDialog(
                                 onDismissRequest = {
@@ -78,7 +77,6 @@ class UserFragment : Fragment() {
                                 text = { Text(stringResource(id = R.string.logout_confirmation)) },
                                 confirmButton = {
                                     Button(
-                                        //modifier = Modifier.weight(1f),
                                         onClick = {
                                             viewModel.logout()
                                             openDialog.value = false },
@@ -89,7 +87,6 @@ class UserFragment : Fragment() {
                                 },
                                 dismissButton = {
                                     Button(
-                                        //modifier = Modifier.weight(1f),
                                         onClick = { openDialog.value = false }
                                     ) {
                                         Text(stringResource(id = R.string.cancel))
@@ -110,7 +107,6 @@ class UserFragment : Fragment() {
     fun UserTopBar(
         onLogOutClicked: () -> Unit
     ){
-
         TopAppBar(
             title = {
                 Text(
@@ -145,19 +141,15 @@ class UserFragment : Fragment() {
     
     @Composable
     fun UserInfo(userInfo: UserInfo,publicUserInfo: PublicUserInfo?){
-        val textColor = Color.Black
-        val textSizeName = 30.sp
-        val textSizeCommon = 20.sp
-        val textSizeUserName = 15.sp
         val avatar:String? = publicUserInfo?.profileImage?.large
         Row() {
             GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape))
             Column() {
                 Log.d("MyLog","User:${userInfo}")
-                Text(text = "${userInfo.firstName} ${userInfo.lastName}", color = textColor, fontSize = textSizeName, fontWeight = FontWeight.Bold)
-                Text(text = "${userInfo.username}",color = textColor, fontSize = textSizeUserName)
+                Text(text = "${userInfo.firstName} ${userInfo.lastName}", style = MaterialTheme.typography.headlineLarge)
+                Text(text = "${userInfo.username}", style = MaterialTheme.typography.bodySmall)
                 userInfo.bio?.let{bio->
-                    Text(text = "${bio}", fontSize = textSizeCommon, modifier = Modifier.padding(top = 15.dp, bottom = 15.dp), fontWeight = FontWeight.Bold,color = textColor)
+                    Text(text = "${bio}", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
                 }
                 userInfo.location?.let { location->
                     Row() {
@@ -165,7 +157,7 @@ class UserFragment : Fragment() {
                             Icons.Outlined.LocationOn,
                             contentDescription = stringResource(id = R.string.location_icon_description)
                         )
-                        Text(text = "${location}", fontSize = textSizeCommon, color = textColor)
+                        Text(text = "${location}", style = MaterialTheme.typography.bodyLarge)
                     }
                 }
                 userInfo.email?.let { email->
@@ -174,7 +166,7 @@ class UserFragment : Fragment() {
                             Icons.Outlined.Mail,
                             contentDescription = stringResource(id = R.string.mail_icon_description)
                         )
-                        Text(text = "${email}", fontSize = textSizeCommon, color = textColor)
+                        Text(text = "${email}", style = MaterialTheme.typography.bodyLarge)
                     }
                 }
                 userInfo.downloads?.let {downloads->
@@ -183,7 +175,7 @@ class UserFragment : Fragment() {
                             Icons.Outlined.Download,
                             contentDescription = stringResource(id = R.string.download_icon_description)
                         )
-                        Text(text = "${downloads}", fontSize = textSizeCommon, color = textColor)
+                        Text(text = "${downloads}", style = MaterialTheme.typography.bodyLarge)
                     }
                 }
 

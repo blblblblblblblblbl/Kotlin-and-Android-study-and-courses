@@ -91,8 +91,6 @@ class PhotoDetailedInfoFragment : Fragment() {
         val coroutineScope: CoroutineScope = rememberCoroutineScope()
         viewModel.status.observe(viewLifecycleOwner, Observer { status ->
             status?.let {
-                //Reset status value at first to prevent multitriggering
-                //and to be available to trigger action again
                 if (it){
                     viewModel.status.value = null
                     coroutineScope.launch {
@@ -178,9 +176,6 @@ class PhotoDetailedInfoFragment : Fragment() {
     }
     @Composable
     fun PhotoDescription(detailedPhotoInfo: DetailedPhotoInfo){
-        val textColor = Color.Black
-        val textSizeCommon = 15.sp
-        val textSizeHashTag = 10.sp
         Column(modifier = Modifier.padding(10.dp)) {
             detailedPhotoInfo.location?.let { location->
                 if (location.city!=null||location.country!=null||(location.position!=null&&location.position?.latitude!=null&&location.position?.longitude!=null)){
@@ -200,10 +195,9 @@ class PhotoDetailedInfoFragment : Fragment() {
                             Icon(
                                 Icons.Outlined.LocationOn,
                                 contentDescription = "location icon",
-                                //tint = Color.Black,
                                 )
                         }
-                        Text(text = "${location.city?:""} ${location.country?:""}", color = textColor, fontSize = textSizeCommon)
+                        Text(text = "${location.city?:""} ${location.country?:""}", style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }
@@ -212,35 +206,34 @@ class PhotoDetailedInfoFragment : Fragment() {
             detailedPhotoInfo.tags.forEach {
                 hashTags += "#${it.title}"
             }
-            if (hashTags!="") Text(text = hashTags, color = textColor, fontSize = textSizeCommon, modifier = Modifier.padding(20.dp))
+            if (hashTags!="") Text(text = hashTags, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(20.dp))
             detailedPhotoInfo.exif?.let {exif->
                 Row() {
                     Column() {
-                        exif.make?.let { make-> Text(text = "${stringResource(id = R.string.made_with_camera)}: ${make}",color = textColor, fontSize = textSizeCommon) }
-                        exif.model?.let {model->Text(text = "${stringResource(id = R.string.camera_Model)}: ${model}",color = textColor, fontSize = textSizeCommon)}
-                        exif.exposureTime?.let {exposureTime->Text(text = "${stringResource(id = R.string.exposure)}: ${exposureTime}",color = textColor, fontSize = textSizeCommon)}
-                        exif.aperture?.let {aperture->Text(text = "${stringResource(id = R.string.aperture)}: ${aperture}",color = textColor, fontSize = textSizeCommon)}
-                        exif.focalLength?.let {focalLength->Text(text = "${stringResource(id = R.string.focal_length)}: ${focalLength}",color = textColor, fontSize = textSizeCommon)}
-                        exif.iso?.let {iso->Text(text = "${stringResource(id = R.string.iso)}: ${iso}",color = textColor, fontSize = textSizeCommon)}
+                        exif.make?.let { make-> Text(text = "${stringResource(id = R.string.made_with_camera)}: ${make}",style = MaterialTheme.typography.bodyMedium) }
+                        exif.model?.let {model->Text(text = "${stringResource(id = R.string.camera_Model)}: ${model}",style = MaterialTheme.typography.bodyMedium)}
+                        exif.exposureTime?.let {exposureTime->Text(text = "${stringResource(id = R.string.exposure)}: ${exposureTime}",style = MaterialTheme.typography.bodyMedium)}
+                        exif.aperture?.let {aperture->Text(text = "${stringResource(id = R.string.aperture)}: ${aperture}",style = MaterialTheme.typography.bodyMedium)}
+                        exif.focalLength?.let {focalLength->Text(text = "${stringResource(id = R.string.focal_length)}: ${focalLength}",style = MaterialTheme.typography.bodyMedium)}
+                        exif.iso?.let {iso->Text(text = "${stringResource(id = R.string.iso)}: ${iso}",style = MaterialTheme.typography.bodyMedium)}
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     detailedPhotoInfo.user?.bio?.let { bio->
                         Column() {
-                            Text(text = "${stringResource(id = R.string.about)} @${detailedPhotoInfo.user?.username}:",color = textColor, fontSize = textSizeCommon)
-                            Text(text = "${bio}:",color = textColor, fontSize = textSizeCommon)
+                            Text(text = "${stringResource(id = R.string.about)} @${detailedPhotoInfo.user?.username}:",style = MaterialTheme.typography.bodyMedium)
+                            Text(text = "${bio}:",style = MaterialTheme.typography.bodyMedium)
                         }
                     }
 
                 }
             }
 
-            Row(modifier = Modifier.align(End)) {
-                Text(text = "${stringResource(id = R.string.download)} (${detailedPhotoInfo.downloads})",color = textColor, fontSize = textSizeCommon)
+            Row(modifier = Modifier.align(End), verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "${stringResource(id = R.string.download)} (${detailedPhotoInfo.downloads})",style = MaterialTheme.typography.bodyMedium)
                 IconButton(onClick = { launcher.launch(REQUEST_PERMISSIONS)}) {
                     Icon(
                         Icons.Default.Download,
-                        contentDescription = "download icon",
-                        //tint = Color.Black
+                        contentDescription = "download icon"
                     )
                 }
                 IconButton(onClick = {
@@ -252,8 +245,7 @@ class PhotoDetailedInfoFragment : Fragment() {
                 }) {
                     Icon(
                         Icons.Default.Share,
-                        contentDescription = "share icon",
-                        //tint = Color.Black
+                        contentDescription = "share icon"
                     )
                 }
             }

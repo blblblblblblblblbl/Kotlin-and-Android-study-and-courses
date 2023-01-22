@@ -29,37 +29,33 @@ private val Domine = FontFamily(
 val UnsplashTypography = Typography(
 
     headlineLarge = TextStyle(
-        fontFamily = Montserrat,
-        fontWeight = FontWeight.W600,
+        fontWeight = FontWeight.Bold,
         fontSize = 30.sp
     ),
     headlineMedium = TextStyle(
-        fontFamily = Montserrat,
         fontWeight = FontWeight.W600,
         fontSize = 24.sp
     ),
     headlineSmall = TextStyle(
-        fontFamily = Montserrat,
         fontWeight = FontWeight.W600,
         fontSize = 20.sp
     ),
     labelLarge = TextStyle(
-        fontFamily = Montserrat,
         fontWeight = FontWeight.W600,
         fontSize = 16.sp
     ),
     labelMedium = TextStyle(
-        fontFamily = Montserrat,
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
+        fontSize = 16.sp
+    ),
+    bodyLarge = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp
     ),
     bodyMedium = TextStyle(
-        fontFamily = Domine,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
     bodySmall = TextStyle(
-        fontFamily = Montserrat,
-        fontSize = 14.sp
+        fontSize = 10.sp
     )
 )
