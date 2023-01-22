@@ -37,6 +37,7 @@ import com.blblblbl.myapplication.view.compose_utils.ErrorItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingView
 import com.blblblbl.myapplication.view.compose_utils.PhotoList
+import com.blblblbl.myapplication.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.viewModel.CollectionPhotoListViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,7 +57,9 @@ class CollectionPhotoListFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 //PhotoList(photos = viewModel.pagedPhotos, photoScreen =  PhotoScreen)
-                PhotoList(photos = viewModel.pagedPhotos)
+                UnsplashTheme() {
+                    PhotoList(photos = viewModel.pagedPhotos)
+                }
             }
         }
     }

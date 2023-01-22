@@ -44,6 +44,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.myapplication.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.viewModel.PhotoDetailedInfoFragmentViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,7 +78,9 @@ class PhotoDetailedInfoFragment : Fragment() {
         photoId?.let { viewModel.getPhotoById(it)}
         return ComposeView(requireContext()).apply {
             setContent {
-                all(detailedPhotoInfo = viewModel.detailedPhotoInfo)
+                UnsplashTheme() {
+                    all(detailedPhotoInfo = viewModel.detailedPhotoInfo)
+                }
             }
         }
     }
@@ -197,7 +200,7 @@ class PhotoDetailedInfoFragment : Fragment() {
                             Icon(
                                 Icons.Outlined.LocationOn,
                                 contentDescription = "location icon",
-                                tint = Color.Black,
+                                //tint = Color.Black,
                                 )
                         }
                         Text(text = "${location.city?:""} ${location.country?:""}", color = textColor, fontSize = textSizeCommon)
@@ -237,7 +240,8 @@ class PhotoDetailedInfoFragment : Fragment() {
                     Icon(
                         Icons.Default.Download,
                         contentDescription = "download icon",
-                        tint = Color.Black)
+                        //tint = Color.Black
+                    )
                 }
                 IconButton(onClick = {
                     ShareCompat.IntentBuilder(requireContext())
@@ -249,7 +253,8 @@ class PhotoDetailedInfoFragment : Fragment() {
                     Icon(
                         Icons.Default.Share,
                         contentDescription = "share icon",
-                        tint = Color.Black)
+                        //tint = Color.Black
+                    )
                 }
             }
 

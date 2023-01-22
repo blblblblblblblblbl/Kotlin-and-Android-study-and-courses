@@ -46,6 +46,7 @@ import com.blblblbl.myapplication.view.compose_utils.ErrorItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingView
 import com.blblblbl.myapplication.view.compose_utils.PhotoList
+import com.blblblbl.myapplication.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.viewModel.SearchFragmentViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,27 +64,29 @@ class SearchFragment : Fragment() {
             val searchQuery by viewModel.searchQuery
             val searchedImages = viewModel.searchedImages
             setContent {
-                Scaffold(
-                    topBar = {
-                        SearchWidget(
-                            text = searchQuery,
-                            onTextChange = {
-                                viewModel.updateSearchQuery(query = it)
-                            },
-                            onSearchClicked = {
-                                viewModel.search(query = it)
-                            },
-                            onCloseClicked = {
-                                findNavController().popBackStack()
+                UnsplashTheme() {
+                    Scaffold(
+                        topBar = {
+                            SearchWidget(
+                                text = searchQuery,
+                                onTextChange = {
+                                    viewModel.updateSearchQuery(query = it)
+                                },
+                                onSearchClicked = {
+                                    viewModel.search(query = it)
+                                },
+                                onCloseClicked = {
+                                    findNavController().popBackStack()
+                                }
+                            )
+                        },
+                        content = {
+                            Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
+                                PhotoList(photos = searchedImages)
                             }
-                        )
-                    },
-                    content = {
-                        Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-                            PhotoList(photos = searchedImages)
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }
@@ -224,9 +227,12 @@ class SearchFragment : Fragment() {
             .height(IntrinsicSize.Max)
             .padding(10.dp)
             .clickable {
-                val bundle =  bundleOf()
-                bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY,photo.id)
-                findNavController().navigate(R.id.action_collectionPhotoListFragment_to_photoDetailedInfoFragment2,bundle)
+                val bundle = bundleOf()
+                bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, photo.id)
+                findNavController().navigate(
+                    R.id.action_collectionPhotoListFragment_to_photoDetailedInfoFragment2,
+                    bundle
+                )
             }) {
             GlideImage(imageModel = {photo.urls?.regular},modifier = Modifier.fillMaxSize())
             Column() {

@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.viewModels
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.databinding.FragmentAuthBinding
+import com.blblblbl.myapplication.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.viewModel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,28 +54,30 @@ class AuthFragment : Fragment() {
         )
         return ComposeView(requireContext()).apply {
             setContent {
-                val page = remember { mutableStateOf(FIRST_PAGE) }
-                Scaffold(
-                    topBar = { AuthTopBar(
-                        onForwardClicked = {
-                            if (page.value<images.size) page.value++
-                            Log.d("MyLog","page: ${page.value}")},
-                        onBackClicked = {
-                            if (page.value> FIRST_PAGE) page.value--
-                            Log.d("MyLog","page: ${page.value}")},
-                        isBackVisible = page.value> FIRST_PAGE,
-                        isFrontVisible = page.value< images.size
-                    ) }
-                ) {
-                    Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-                    if(page.value<images.size){
-                        val image = images[page.value]
-                        val phrase = phrases[page.value]
-                        onboardingScreen(image,phrase)
-                    }
-                    else{
-                        AuthScreen()
-                    }
+                UnsplashTheme{
+                    val page = remember { mutableStateOf(FIRST_PAGE) }
+                    Scaffold(
+                        topBar = { AuthTopBar(
+                            onForwardClicked = {
+                                if (page.value<images.size) page.value++
+                                Log.d("MyLog","page: ${page.value}")},
+                            onBackClicked = {
+                                if (page.value> FIRST_PAGE) page.value--
+                                Log.d("MyLog","page: ${page.value}")},
+                            isBackVisible = page.value> FIRST_PAGE,
+                            isFrontVisible = page.value< images.size
+                        ) }
+                    ) {
+                        Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
+                            if(page.value<images.size){
+                                val image = images[page.value]
+                                val phrase = phrases[page.value]
+                                onboardingScreen(image,phrase)
+                            }
+                            else{
+                                AuthScreen()
+                            }
+                        }
                     }
                 }
             }

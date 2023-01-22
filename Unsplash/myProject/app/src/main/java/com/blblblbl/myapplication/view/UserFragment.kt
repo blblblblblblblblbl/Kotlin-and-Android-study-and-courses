@@ -42,6 +42,7 @@ import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserI
 import com.blblblbl.myapplication.view.compose_utils.ErrorItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingView
+import com.blblblbl.myapplication.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.viewModel.UserFragmentViewModel
 import com.example.example.UserInfo
 import com.skydoves.landscapist.glide.GlideImage
@@ -60,45 +61,46 @@ class UserFragment : Fragment() {
         viewModel.getUserInfo()
         return ComposeView(requireContext()).apply {
             setContent {
-                val openDialog = remember { mutableStateOf(false) }
-                Scaffold(
-                    topBar = {
-                        UserTopBar(onLogOutClicked = { openDialog.value = true })
-                    }
-                ) {
-                    val antiWarning = it
-                    if (openDialog.value) {
-                        AlertDialog(
-                            onDismissRequest = {
-                                openDialog.value = false
-                            },
-                            title = { Text(text = stringResource(id = R.string.action_confirmation)) },
-                            text = { Text(stringResource(id = R.string.logout_confirmation)) },
-                            confirmButton = {
-                                Button(
-                                    //modifier = Modifier.weight(1f),
-                                    onClick = {
-                                        viewModel.logout()
-                                        openDialog.value = false },
-                                    content = {
-                                        Text(stringResource(id = R.string.logout))
+                UnsplashTheme() {
+                    val openDialog = remember { mutableStateOf(false) }
+                    Scaffold(
+                        topBar = {
+                            UserTopBar(onLogOutClicked = { openDialog.value = true })
+                        }
+                    ) {
+                        val antiWarning = it
+                        if (openDialog.value) {
+                            AlertDialog(
+                                onDismissRequest = {
+                                    openDialog.value = false
+                                },
+                                title = { Text(text = stringResource(id = R.string.action_confirmation)) },
+                                text = { Text(stringResource(id = R.string.logout_confirmation)) },
+                                confirmButton = {
+                                    Button(
+                                        //modifier = Modifier.weight(1f),
+                                        onClick = {
+                                            viewModel.logout()
+                                            openDialog.value = false },
+                                        content = {
+                                            Text(stringResource(id = R.string.logout))
+                                        }
+                                    )
+                                },
+                                dismissButton = {
+                                    Button(
+                                        //modifier = Modifier.weight(1f),
+                                        onClick = { openDialog.value = false }
+                                    ) {
+                                        Text(stringResource(id = R.string.cancel))
                                     }
-                                )
-                            },
-                            dismissButton = {
-                                Button(
-                                    //modifier = Modifier.weight(1f),
-                                    onClick = { openDialog.value = false }
-                                ) {
-                                    Text(stringResource(id = R.string.cancel))
                                 }
-                            }
-                        )
+                            )
+                        }
+                        Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
+                            screen(privateUserInfo = viewModel.privateUserInfo, publicUserInfo = viewModel.publicUserInfo)
+                        }
                     }
-                    Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-                        screen(privateUserInfo = viewModel.privateUserInfo, publicUserInfo = viewModel.publicUserInfo)
-                    }
-
                 }
             }
         }

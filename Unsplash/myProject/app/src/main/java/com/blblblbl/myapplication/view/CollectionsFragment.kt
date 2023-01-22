@@ -37,6 +37,7 @@ import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.view.compose_utils.ErrorItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingView
+import com.blblblbl.myapplication.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.viewModel.CollectionsFragmentViewModel
 import com.example.example.PhotoCollection
 import com.skydoves.landscapist.glide.GlideImage
@@ -55,7 +56,9 @@ class CollectionsFragment : Fragment() {
         }*/
         return ComposeView(requireContext()).apply {
             setContent {
-                PhotoCollectionsList(photoCollections = viewModel.pagedCollections)
+                UnsplashTheme() {
+                    PhotoCollectionsList(photoCollections = viewModel.pagedCollections)
+                }
             }
         }
     }
@@ -69,9 +72,12 @@ class CollectionsFragment : Fragment() {
                         .fillMaxWidth()
                         .height(200.dp)
                         .clickable {
-                            val bundle =  bundleOf()
-                            bundle.putString(CollectionPhotoListFragment.COLLECTION_ID_KEY,item.id)
-                            findNavController().navigate(R.id.action_collectionsFragment_to_collectionPhotoListFragment,bundle)
+                            val bundle = bundleOf()
+                            bundle.putString(CollectionPhotoListFragment.COLLECTION_ID_KEY, item.id)
+                            findNavController().navigate(
+                                R.id.action_collectionsFragment_to_collectionPhotoListFragment,
+                                bundle
+                            )
                         }) {
                         PhotoCollectionItem(photoCollection = item)
                     }

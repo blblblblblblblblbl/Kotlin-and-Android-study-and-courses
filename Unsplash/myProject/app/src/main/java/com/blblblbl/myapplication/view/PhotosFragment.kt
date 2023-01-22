@@ -56,6 +56,7 @@ import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 import com.blblblbl.myapplication.view.compose_utils.ErrorItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingView
+import com.blblblbl.myapplication.view.compose_utils.theming.UnsplashTheme
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
@@ -71,22 +72,24 @@ class PhotosFragment : Fragment() {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                Scaffold(
-                    topBar = {
-                        PhotosTopBar(
-                            onSearchClicked = {
-                                findNavController().navigate(
-                                    R.id.action_photosFragment_to_searchFragment
-                                )
+                UnsplashTheme {
+                    Scaffold(
+                        topBar = {
+                            PhotosTopBar(
+                                onSearchClicked = {
+                                    findNavController().navigate(
+                                        R.id.action_photosFragment_to_searchFragment
+                                    )
+                                }
+                            )
+                        },
+                        content = {
+                            Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
+                                PhotosList(photos = viewModel.pagedPhotos)
                             }
-                        )
-                    },
-                    content = {
-                        Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-                            PhotosList(photos = viewModel.pagedPhotos)
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }
