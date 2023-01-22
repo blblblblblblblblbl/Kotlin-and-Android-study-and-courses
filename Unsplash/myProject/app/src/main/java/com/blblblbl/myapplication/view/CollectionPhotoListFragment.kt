@@ -9,6 +9,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -128,7 +131,7 @@ class CollectionPhotoListFragment : Fragment() {
                     Text(text = "${photo.likes}", color = textColor, fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
                     if (isLiked) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
+                            Icons.Outlined.Favorite,
                             contentDescription = "like icon",
                             tint = Color.Red,
                             modifier = Modifier.clickable {
@@ -139,7 +142,7 @@ class CollectionPhotoListFragment : Fragment() {
                     }
                     else {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
+                            Icons.Outlined.FavoriteBorder,
                             contentDescription = "like icon",
                             tint = Color.White,
                             modifier = Modifier.clickable {

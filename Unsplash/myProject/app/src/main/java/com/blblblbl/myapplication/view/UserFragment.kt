@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -159,7 +160,7 @@ class UserFragment : Fragment() {
                 userInfo.location?.let { location->
                     Row() {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_outline_location_on_24),
+                            Icons.Outlined.LocationOn,
                             contentDescription = stringResource(id = R.string.location_icon_description)
                         )
                         Text(text = "${location}", fontSize = textSizeCommon, color = textColor)
@@ -168,7 +169,7 @@ class UserFragment : Fragment() {
                 userInfo.email?.let { email->
                     Row() {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_outline_mail_24),
+                            Icons.Outlined.Mail,
                             contentDescription = stringResource(id = R.string.mail_icon_description)
                         )
                         Text(text = "${email}", fontSize = textSizeCommon, color = textColor)
@@ -177,7 +178,7 @@ class UserFragment : Fragment() {
                 userInfo.downloads?.let {downloads->
                     Row() {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_baseline_download_24),
+                            Icons.Outlined.Download,
                             contentDescription = stringResource(id = R.string.download_icon_description)
                         )
                         Text(text = "${downloads}", fontSize = textSizeCommon, color = textColor)
@@ -260,7 +261,7 @@ class UserFragment : Fragment() {
                     Text(text = "${photo.likes}", color = textColor, fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
                     if (isLiked) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
+                            Icons.Outlined.Favorite,
                             contentDescription = stringResource(id = R.string.like_icon_description),
                             tint = Color.Red,
                             modifier = Modifier.clickable {
@@ -271,7 +272,7 @@ class UserFragment : Fragment() {
                     }
                     else {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
+                            Icons.Outlined.FavoriteBorder,
                             contentDescription = stringResource(id = R.string.like_icon_description),
                             tint = Color.White,
                             modifier = Modifier.clickable {

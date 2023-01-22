@@ -16,6 +16,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,6 +35,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ShareCompat
@@ -140,7 +149,7 @@ class PhotoDetailedInfoFragment : Fragment() {
                     Text(text = "${detailedPhotoInfo.likes}", color = textColor, fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
                     if (isLiked) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
+                            Icons.Default.Favorite,
                             contentDescription = "like icon",
                             tint = Color.Red,
                             modifier = Modifier.clickable {
@@ -151,7 +160,7 @@ class PhotoDetailedInfoFragment : Fragment() {
                     }
                     else {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
+                            Icons.Default.FavoriteBorder,
                             contentDescription = "like icon",
                             tint = Color.White,
                             modifier = Modifier.clickable {
@@ -185,7 +194,10 @@ class PhotoDetailedInfoFragment : Fragment() {
                                 startActivity(intent)
                             }
                         }) {
-                            Icon(painter = painterResource(id = R.drawable.ic_outline_location_on_24), contentDescription = "location icon", tint = Color.Black,
+                            Icon(
+                                Icons.Outlined.LocationOn,
+                                contentDescription = "location icon",
+                                tint = Color.Black,
                                 )
                         }
                         Text(text = "${location.city?:""} ${location.country?:""}", color = textColor, fontSize = textSizeCommon)
@@ -222,7 +234,10 @@ class PhotoDetailedInfoFragment : Fragment() {
             Row(modifier = Modifier.align(End)) {
                 Text(text = "${stringResource(id = R.string.download)} (${detailedPhotoInfo.downloads})",color = textColor, fontSize = textSizeCommon)
                 IconButton(onClick = { launcher.launch(REQUEST_PERMISSIONS)}) {
-                    Icon(painter = painterResource(id = R.drawable.ic_baseline_download_24), contentDescription = "download icon", tint = Color.Black)
+                    Icon(
+                        Icons.Default.Download,
+                        contentDescription = "download icon",
+                        tint = Color.Black)
                 }
                 IconButton(onClick = {
                     ShareCompat.IntentBuilder(requireContext())
@@ -231,13 +246,55 @@ class PhotoDetailedInfoFragment : Fragment() {
                         .setText("https://unsplash.com/photos/${detailedPhotoInfo.id}")
                         .startChooser()
                 }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_baseline_share_24), contentDescription = "share icon", tint = Color.Black)
+                    Icon(
+                        Icons.Default.Share,
+                        contentDescription = "share icon",
+                        tint = Color.Black)
                 }
             }
 
         }
     }
-
+    @Preview
+    @Composable
+    fun iconPreviewDownload(){
+        Icon(
+            Icons.Default.Download,
+            contentDescription = "share icon",
+            tint = Color.Black)
+    }
+    @Preview
+    @Composable
+    fun iconPreviewShare(){
+        Icon(
+            Icons.Default.Share,
+            contentDescription = "share icon",
+            tint = Color.Black)
+    }
+    @Preview
+    @Composable
+    fun iconPreviewLocation(){
+        Icon(
+            Icons.Outlined.LocationOn,
+            contentDescription = "share icon",
+            tint = Color.Black)
+    }
+    @Preview
+    @Composable
+    fun iconPreviewFavourite(){
+        Icon(
+            Icons.Default.Favorite,
+            contentDescription = "share icon",
+            tint = Color.Black)
+    }
+    @Preview
+    @Composable
+    fun iconPreviewFavouriteOutlined(){
+        Icon(
+            Icons.Default.FavoriteBorder,
+            contentDescription = "share icon",
+            tint = Color.White)
+    }
     companion object{
         const val PHOTO_ID_KEY = "photoIdKey"
         private val REQUEST_PERMISSIONS:Array<String> = buildList {
