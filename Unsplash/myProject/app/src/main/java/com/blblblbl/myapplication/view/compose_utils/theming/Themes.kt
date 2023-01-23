@@ -8,20 +8,20 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 
 private val LightColors = lightColorScheme(
-    primary = Red700,
+    primary = Purple500,
     //primaryVariant = Red900,
     onPrimary = Color.White,
-    secondary = Red700,
+    secondary = Purple200,
     //secondaryVariant = Red900,
     onSecondary = Color.White,
     error = Red800
 )
 
 private val DarkColors = darkColorScheme(
-    primary = Red300,
+    primary = Purple500,
     //primaryVariant = Red700,
     onPrimary = Color.Black,
-    secondary = Red300,
+    secondary = Purple200,
     onSecondary = Color.Black,
     error = Red200
 )
